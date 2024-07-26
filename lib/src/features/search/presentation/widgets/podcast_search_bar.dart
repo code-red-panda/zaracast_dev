@@ -11,11 +11,11 @@ class PodcastSearchBar extends StatefulWidget {
 }
 
 class _PodcastSearchBarState extends State<PodcastSearchBar> {
-  late final TextEditingController _controller;
+  late final SearchController _controller;
 
   @override
   void initState() {
-    _controller = TextEditingController();
+    _controller = SearchController();
     super.initState();
   }
 
@@ -35,58 +35,128 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         return SearchAnchor(
-            builder: (BuildContext context, SearchController controller) {
-          return SearchBar(
-            controller: controller,
-            elevation: WidgetStateProperty.all<double>(0),
-            hintText: 'Search for podcasts',
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: SizedBox(
-                height: 24,
-                width: 24,
-                child: Visibility(
-                  visible: state is! SearchLoading,
-                  replacement: const CircularProgressIndicator(strokeWidth: 2),
-                  child: const Icon(Icons.search),
+          isFullScreen: false,
+          searchController: _controller,
+          viewOnSubmitted: (value) {
+            // Close the keyboard
+            FocusScope.of(context).unfocus();
+            if (value.isNotEmpty) {
+              context.read<SearchBloc>().add(
+                    SearchPodcastsEvent(SearchPodcastsParams(value)),
+                  );
+            }
+
+            if (_controller.isOpen) {
+              _controller.closeView(value);
+            }
+          },
+          builder: (context, controller) {
+            return SearchBar(
+              controller: _controller,
+              hintText: 'Search for podcasts',
+              trailing: <Widget>[
+                Visibility(
+                  visible: _controller.text.isNotEmpty,
+                  child: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      _controller.clear();
+                      context.read<SearchBloc>().add(const ClearSearchEvent());
+                    },
+                  ),
                 ),
-              ),
-            ),
-            onChanged: (String value) => controller.openView(),// _controller.text = value,
-            onSubmitted: (String value) => value.isNotEmpty
-                ? context.read<SearchBloc>().add(
-                      SearchPodcastsEvent(SearchPodcastsParams(value)),
-                    )
-                : null,
-            onTap: () => controller.openView(),
-            // Close the keyboard when tapping outside the search bar
-            onTapOutside: (event) => FocusScope.of(context).unfocus(),
-            trailing: <Widget>[
-              Visibility(
-                visible: state is! SearchLoading,
-                child: IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () =>
-                      context.read<SearchBloc>().add(const ClearSearchEvent()),
-                ),
-              ),
-            ],
-          );
-        }, suggestionsBuilder:
-                (BuildContext context, SearchController controller) {
-          return List<ListTile>.generate(5, (int index) {
-            final String item = 'item $index';
-            return ListTile(
-              title: Text(item),
-              onTap: () {
-                setState(() {
-                  controller.closeView(item);
-                });
+              ],
+              onChanged: (value) => _controller.text = value,
+              onSubmitted: (value) {
+                if (value.isNotEmpty) {
+                  context.read<SearchBloc>().add(
+                        SearchPodcastsEvent(SearchPodcastsParams(value)),
+                      );
+                }
+
+                if (_controller.isOpen) {
+                  _controller.closeView(value);
+                }
+
+                // Close the keyboard
+                FocusScope.of(context).unfocus();
               },
+              onTap: () => _controller.openView(),
+              textInputAction: TextInputAction.search,
             );
-          });
-        });
+          },
+          suggestionsBuilder: (context, controller) {
+            return List<ListTile>.generate(5, (int index) {
+              final item = 'item $index';
+              return ListTile(
+                title: Text(item),
+                onTap: () {
+                  setState(() {
+                    controller.closeView(item);
+                  });
+                },
+              );
+            });
+          },
+        );
       },
     );
   }
 }
+
+/*
+
+return SearchAnchor.bar(
+          barHintText: 'Search for podcasts',
+          barTrailing: <Widget>[
+            Visibility(
+              visible: _controller.text.isNotEmpty,
+              child: IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  _controller.clear();
+                  context.read<SearchBloc>().add(const ClearSearchEvent());
+                },
+              ),
+            ),
+          ],
+          isFullScreen: false,
+          onChanged: (value) => _controller.text = value,
+          onSubmitted: (value) {
+            if (value.isNotEmpty) {
+              print('event');
+              context.read<SearchBloc>().add(
+                    SearchPodcastsEvent(SearchPodcastsParams(value)),
+                  );
+            }
+
+            if (_controller.isOpen) {
+              _controller.closeView(value);
+            }
+
+            // Close the keyboard
+            print('close keyboard');
+            FocusScope.of(context).unfocus();
+            FocusScope.of(context).unfocus();
+          },
+          searchController: _controller,
+          suggestionsBuilder:
+              (BuildContext context, SearchController controller) {
+            return List<ListTile>.generate(5, (int index) {
+              final item = 'item $index';
+              return ListTile(
+                title: Text(item),
+                onTap: () {
+                  setState(() {
+                    controller.closeView(item);
+                  });
+                },
+              );
+            });
+          },
+          textInputAction: _controller.isAttached
+              ? TextInputAction.search
+              : TextInputAction.unspecified,
+        );
+
+        */

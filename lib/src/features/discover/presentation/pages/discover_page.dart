@@ -50,8 +50,11 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
           scrollController: _scrollController,
         ),
         const SliverToBoxAdapter(
-          child: PodcastSearchBar(),
-        )
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: PodcastSearchBar(),
+          ),
+        ),
       ],
     );
   }

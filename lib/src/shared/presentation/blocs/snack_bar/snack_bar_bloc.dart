@@ -6,12 +6,12 @@ part 'snack_bar_state.dart';
 
 class SnackBarBloc extends Bloc<SnackBarEvent, SnackBarState> {
   SnackBarBloc() : super(const SnackBarInitial()) {
-    on<SnackBarShowEvent>(_onSnackbarShow);
+    on<ShowSnackBarEvent>(_onSnackbarShow);
     on<ClearSnackBarEvent>(_onClearSnackbar);
   }
 
   void _onSnackbarShow(
-    SnackBarShowEvent event,
+    ShowSnackBarEvent event,
     Emitter<SnackBarState> emit,
   ) {
     emit(SnackBarLoaded(event.userMessage));

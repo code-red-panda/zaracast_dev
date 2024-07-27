@@ -40,6 +40,7 @@ class StatefulShellScaffoldChild extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.userMessage)),
             );
+
             context.read<SnackBarBloc>().add(const ClearSnackBarEvent());
           }
         },

@@ -51,7 +51,7 @@ class ClearCacheListTile extends StatelessWidget {
             if (!context.mounted) return;
             context
                 .read<SnackBarBloc>()
-                .add(const SnackBarShowEvent('Cache cleared'));
+                .add(const ShowSnackBarEvent('Cache cleared'));
           }
         }
       },

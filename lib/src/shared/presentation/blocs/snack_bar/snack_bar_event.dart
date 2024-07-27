@@ -7,8 +7,8 @@ sealed class SnackBarEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class SnackBarShowEvent extends SnackBarEvent {
-  const SnackBarShowEvent(this.userMessage);
+final class ShowSnackBarEvent extends SnackBarEvent {
+  const ShowSnackBarEvent(this.userMessage);
 
   final String userMessage;
 

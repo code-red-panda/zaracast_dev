@@ -96,7 +96,7 @@ class _SliverAppBarBuilderState extends State<SliverAppBarBuilder> {
             ),
             // The [titlePadding] is following M3 Medium top app bar padding
             // https://m3.material.io/components/top-app-bar/specs#3f23d082-0dd6-4358-a6c9-2c6d72f1cd7a
-            titlePadding: const EdgeInsets.only(bottom: 16, left: 16),
+            titlePadding: const EdgeInsets.only(left: 16),
           ),
         ),
       ),

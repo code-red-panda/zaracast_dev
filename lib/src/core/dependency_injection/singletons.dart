@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zaracast/src/core/network/network_info.dart';
 import 'package:zaracast/src/core/secrets/podcast_index.dart';
 import 'package:zaracast/src/core/utils/dio/dio_network.dart';
@@ -13,7 +14,7 @@ final getIt = GetIt.instance;
 Future<void> registerSingletons() async {
   // Initialize instances
   //final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  //final sharedPreferences = await SharedPreferences.getInstance();
+  final sharedPreferences = await SharedPreferences.getInstance();
 
   // Register core singletons
   getIt
@@ -28,8 +29,8 @@ Future<void> registerSingletons() async {
         apiSecret: podcastIndexApiSecret,
         userAgent: 'ZaraCast/1.0.0',
       ),
-    );
-  //..registerLazySingleton(() => sharedPreferences);
+    )
+    ..registerLazySingleton(() => sharedPreferences);
 
   // Register feature singletons
   await registerSearchSingletons();
@@ -40,4 +41,4 @@ AppDatabase get appDatabase => getIt.get<AppDatabase>();
 DioNetwork get dio => getIt.get<DioNetwork>();
 NetworkInfoImpl get networkInfo => getIt.get<NetworkInfoImpl>();
 PodcastIndex get podcastIndex => getIt.get<PodcastIndex>();
-//SharedPreferences get prefs => getIt.get<SharedPreferences>();
+SharedPreferences get prefs => getIt.get<SharedPreferences>();

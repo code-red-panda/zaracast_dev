@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zaracast/src/core/dependency_injection/singletons.dart';
 import 'package:zaracast/src/features/settings/presentation/blocs/settings_bloc.dart';
 import 'package:zaracast/src/features/settings/presentation/widgets/clear_cache_list_tile.dart';
 import 'package:zaracast/src/features/settings/presentation/widgets/theme_list_tile.dart';
@@ -45,23 +46,23 @@ class _SettingsPageState extends State<SettingsPage> {
             scrollController: _scrollController,
           ),
           SliverList.list(
-            children: const [
+            children: [
               Card(
-                margin: EdgeInsets.symmetric(horizontal: 16),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
-                      ThemeListTile(),
-                      Divider(),
-                      ThemeModeListTile(),
-                      Divider(),
-                      ClearCacheListTile(),
+                      const ThemeListTile(),
+                      const Divider(),
+                      const ThemeModeListTile(),
+                      const Divider(),
+                      ClearCacheListTile(prefs: prefs),
                     ],
                   ),
                 ),
               ),
-              AboutListTile(
+              const AboutListTile(
                 icon: Icon(Icons.info_outline),
                 applicationName: 'Pokemon',
                 applicationVersion: '1.0.0',

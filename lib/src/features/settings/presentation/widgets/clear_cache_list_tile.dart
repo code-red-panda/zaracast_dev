@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zaracast/src/shared/presentation/blocs/snack_bar/snack_bar_bloc.dart';
 import 'package:zaracast/src/shared/presentation/utils/dialogs.dart';
 
 class ClearCacheListTile extends StatelessWidget {
-  const ClearCacheListTile({super.key});
+  const ClearCacheListTile({required this.prefs, super.key});
+
+  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,7 @@ class ClearCacheListTile extends StatelessWidget {
           PaintingBinding.instance.imageCache.clearLiveImages();
 
           // Shared preferences
-          //await prefs.clear();
+          await prefs.clear();
 
           // Temporary directory
           final tempDir = await getTemporaryDirectory();

@@ -1,3 +1,6 @@
 # zaracast
 
-A new Flutter project.
+## Shared Preferences Keys
+```
+URL_BLACKLIST_$url
+```

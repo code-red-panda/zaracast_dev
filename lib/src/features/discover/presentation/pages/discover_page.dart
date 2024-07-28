@@ -1,10 +1,18 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zaracast/src/core/utils/extensions/format_helper.dart';
+import 'package:material_color_utilities/material_color_utilities.dart';
+import 'package:zaracast/src/core/dependency_injection/singletons.dart';
+import 'package:zaracast/src/core/styles/style_sheet.dart';
+import 'package:zaracast/src/core/utils/helpers/format_helper.dart';
 import 'package:zaracast/src/features/podcast/domain/entities/podcast_entity.dart';
 import 'package:zaracast/src/features/search/data/dependency_injection/search_singletons.dart';
 import 'package:zaracast/src/features/search/presentation/blocs/search/search_bloc.dart';
 import 'package:zaracast/src/features/search/presentation/widgets/podcast_search_bar.dart';
+import 'package:zaracast/src/shared/presentation/widgets/cached_network_image_builder.dart';
 import 'package:zaracast/src/shared/presentation/widgets/sliver_app_bar_builder.dart';
 
 class DiscoverPage extends StatelessWidget {
@@ -62,7 +70,7 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
                 children: [
                   Visibility(
                     visible: state is SearchLoading,
-                    child: const LinearProgressIndicator(minHeight: 0.5),
+                    child: const LinearProgressIndicator(),
                   ),
                   const SizedBox(height: 16),
                 ],
@@ -92,12 +100,16 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
               itemCount: podcasts.length,
               itemBuilder: (context, index) {
                 final podcast = podcasts[index];
+                final categories = podcast.categories?.values.join(', ') ?? '';
 
                 return ListTile(
                   leading: SizedBox(
                     height: 64,
                     width: 64,
-                    child: Image.network(podcast.image),
+                    child: CachedNetworkImageBuilder(
+                      imageUrl: podcast.image,
+                      prefs: prefs,
+                    ),
                   ),
                   title: Text(
                     podcast.title,
@@ -106,7 +118,7 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(
-                    podcast.categories.toString(),
+                    categories,
                     maxLines: 1,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
@@ -114,11 +126,11 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
                   trailing: SizedBox(
                     height: 64,
                     width: 64,
-                    child: Column(
-                      children: [
-                        Text(formatDatePublished(podcast.newestItemPubdate ?? 0)),
-                        Text(podcast.episodeCount.toString()),
-                      ],
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        formatDatePublished(podcast.newestItemPubdate ?? 0),
+                      ),
                     ),
                   ),
                   onTap: () => print('tap'),

@@ -1,5 +1,5 @@
-import 'package:zaracast/src/core/utils/extensions/date_time_extensions.dart';
 import 'package:intl/intl.dart';
+import 'package:zaracast/src/core/utils/extensions/date_time_extensions.dart';
 
 String formatBytes(int bytes) {
   if (bytes < 1024) {
@@ -13,7 +13,6 @@ String formatBytes(int bytes) {
   }
 }
 
-// TODO(red): Instead of "Today" change it to "hours ago"
 String formatDatePublished(int epoch) {
   final date = DateTime.fromMillisecondsSinceEpoch(epoch * 1000);
   final daysAgo = date.daysFromToday;
@@ -35,7 +34,11 @@ String formatDatePublished(int epoch) {
     case 7:
       return '7 days ago';
     default:
-      return DateFormat.yMMMd().format(date);
+      if (date.year == DateTime.now().year) {
+        return DateFormat('MMM d').format(date);
+      } else {
+        return DateFormat('MMM y').format(date);
+      }
   }
 }
 

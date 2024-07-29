@@ -4,11 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zaracast/src/features/search/data/dependency_injection/search_singletons.dart';
+import 'package:zaracast/src/features/search/presentation/blocs/search/search_bloc.dart';
 import 'package:zaracast/src/shared/presentation/blocs/snack_bar/snack_bar_bloc.dart';
 import 'package:zaracast/src/shared/presentation/utils/dialogs.dart';
 
 class ClearCacheListTile extends StatelessWidget {
   const ClearCacheListTile({required this.prefs, super.key});
+
+  final SharedPreferences prefs;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: searchBloc,
+      child: ClearCacheListTileChild(prefs: prefs),
+    );
+  }
+}
+
+class ClearCacheListTileChild extends StatelessWidget {
+  const ClearCacheListTileChild({required this.prefs, super.key});
 
   final SharedPreferences prefs;
 
@@ -53,8 +69,9 @@ class ClearCacheListTile extends StatelessWidget {
 
             if (!context.mounted) return;
             context
-                .read<SnackBarBloc>()
-                .add(const ShowSnackBarEvent('Cache cleared'));
+              ..read<SearchBloc>().add(const ClearSearchEvent())
+              ..read<SnackBarBloc>()
+                  .add(const ShowSnackBarEvent('Cache cleared'));
           }
         }
       },

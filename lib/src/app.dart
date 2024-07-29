@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:zaracast/src/core/router/go_router.dart';
 import 'package:zaracast/src/core/themes/ghost_spider_material_theme.dart';
+import 'package:zaracast/src/core/themes/hulk_material_theme.dart';
 import 'package:zaracast/src/core/themes/iron_man_material_theme.dart';
 import 'package:zaracast/src/core/themes/material_theme.dart';
 import 'package:zaracast/src/features/settings/data/dependency_injection/settings_singletons.dart';
@@ -35,6 +36,7 @@ class MyAppChild extends StatelessWidget {
 
     final ghostSpiderTheme = GhostSpiderMaterialTheme(textTheme);
     final ironManTheme = IronManMaterialTheme(textTheme);
+    final hulkTheme = HulkMaterialTheme(textTheme);
 
     return BlocBuilder<SettingsBloc, SettingsState>(
       buildWhen: (previous, current) =>
@@ -50,10 +52,9 @@ class MyAppChild extends StatelessWidget {
               theme = ghostSpiderTheme;
             case MaterialTheme.ironMan:
               theme = ironManTheme;
+            case MaterialTheme.hulk:
+              theme = hulkTheme;
           }
-          theme = state.theme == MaterialTheme.ghostSpider
-              ? ghostSpiderTheme
-              : ironManTheme;
         }
         return MaterialApp.router(
           title: 'ZaraCast',

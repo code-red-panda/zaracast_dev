@@ -5,9 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// TODO(red): When clicking Clear Cache, need to clear SearchBloc state as well
-//   to prevent scheduler library exceptions.
-//   JAKE ALSO MAKE SEARCH BAR A SLIVERAPPBAR THATS FLOATING???
 class CachedNetworkImageBuilder extends StatefulWidget {
   const CachedNetworkImageBuilder({
     required this.imageUrl,

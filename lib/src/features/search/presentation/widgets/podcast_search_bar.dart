@@ -32,14 +32,18 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SearchBloc, SearchState>(
-      listenWhen: (previous, current) => current is SearchError,
+      listenWhen: (previous, current) => previous != current,
       listener: (context, state) {
         if (state is SearchError) {
           context
               .read<SnackBarBloc>()
               .add(ShowSnackBarEvent(state.userMessage));
 
+          _controller.clear();
+
           context.read<SearchBloc>().add(const ClearSearchEvent());
+        } else if (state is SearchInitial) {
+          _controller.clear();
         }
       },
       buildWhen: (previous, current) => previous != current,
@@ -130,14 +134,25 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
             );
           },
           suggestionsBuilder: (suggestionsContext, controller) {
+            // TODO(red): Store podcast Ids in prefs list. Stream podcasts table by those IDs.
             return [
               ListTile(
+                trailing: TextButton(
+                  child: const Text('Clear previous searches'),
+                  onPressed: () {
+                    print('clear searches');
+                  },
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.search),
                 title: const Text('Tile 1'),
                 onTap: () => _controller.isAttached
                     ? _controller.closeView('Tile 1')
                     : null,
               ),
               ListTile(
+                leading: Icon(Icons.search),
                 title: const Text('Tile 2'),
                 onTap: () => _controller.isAttached
                     ? _controller.closeView('Tile 2')

@@ -20,6 +20,8 @@ class ThemeListTile extends StatelessWidget {
           themeName = 'Ghost Spider';
         } else if (state == MaterialTheme.ironMan) {
           themeName = 'Iron Man';
+        } else if (state == MaterialTheme.hulk) {
+          themeName = 'Hulk';
         }
 
         return SizedBox(
@@ -52,6 +54,12 @@ class ThemeListTile extends StatelessWidget {
                     name: 'Iron Man',
                     value: MaterialTheme.ironMan,
                     selected: state == MaterialTheme.ironMan,
+                  ),
+                  BottomSheetListItem(
+                    icon: Icons.front_hand,
+                    name: 'Hulk',
+                    value: MaterialTheme.hulk,
+                    selected: state == MaterialTheme.hulk,
                   ),
                 ],
               );

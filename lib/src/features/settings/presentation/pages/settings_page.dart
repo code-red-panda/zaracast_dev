@@ -45,6 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: 'Settings',
             scrollController: _scrollController,
           ),
+          const SliverToBoxAdapter(child: SizedBox(height: 16)),
           SliverList.list(
             children: [
               Card(

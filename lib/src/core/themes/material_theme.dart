@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-enum MaterialTheme { ghostSpider, ironMan }
+enum MaterialTheme { ghostSpider, ironMan, hulk }
 
 abstract class BaseMaterialTheme {
   const BaseMaterialTheme(this.textTheme);

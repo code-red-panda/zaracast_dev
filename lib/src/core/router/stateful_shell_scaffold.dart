@@ -38,7 +38,10 @@ class StatefulShellScaffoldChild extends StatelessWidget {
         listener: (context, state) {
           if (state is SnackBarLoaded) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.userMessage)),
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(state.userMessage),
+              ),
             );
 
             context.read<SnackBarBloc>().add(const ClearSnackBarEvent());

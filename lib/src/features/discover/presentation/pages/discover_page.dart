@@ -54,14 +54,12 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
   Widget build(BuildContext context) {
     return CustomScrollView(
       controller: _scrollController,
-      //physics: const BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       slivers: [
         SliverAppBarBuilder.largeTitle(
           title: 'Discover',
           scrollController: _scrollController,
         ),
-        // TODO(red): Move the loading indicator to a Stack so it doesn't move
-        //  the other widgets around when its visible
         BlocBuilder<SearchBloc, SearchState>(
           buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
@@ -78,9 +76,6 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
             );
           },
         ),
-
-        // TODO(red): persist the search bar or make it "float" and come back
-        //  when the user scrolls up
         const SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),

@@ -32,7 +32,9 @@ class StatefulShellScaffoldChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // Allows scrolling to the end of lists when the keyboard (or other 
+      // floating widgets) may otherwise cover them.
+      resizeToAvoidBottomInset: true,
       body: BlocListener<SnackBarBloc, SnackBarState>(
         listenWhen: (previous, current) => current is SnackBarLoaded,
         listener: (context, state) {

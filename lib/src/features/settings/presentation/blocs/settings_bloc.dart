@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zaracast/src/features/settings/data/params/create_settings_params.dart';
 import 'package:zaracast/src/features/settings/data/params/stream_settings_params.dart';
@@ -16,11 +16,10 @@ import 'package:zaracast/src/features/settings/domain/use_cases/update_theme_use
 part 'settings_event.dart';
 part 'settings_state.dart';
 
-/// TODO JAKE YOU ARE HERE ONCE CREATED A TABLE THEN HAVE THE BLOC READ IT AND SET STATE TO LOADED
-/// ALSO CHANGE INITIAL STATE BACK TO SETTINGSINITIAL INSTEAD OF SETTINGSLOADED
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc(
-    String userId,
+    CreateSettingsParams createSettingsParams,
+    StreamSettingsParams streamSettingsParams,
     CreateSettingsUseCase createSettingsUseCase,
     StreamSettingsUseCase streamSettingsUseCase,
     UpdateThemeUseCase updateThemeUseCase,
@@ -37,12 +36,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<UpdateThemeModeEvent>(_onUpdateThemeMode);
 
     // Initialize the bloc
-    add(
-      CreateSettingsEvent(
-        CreateSettingsParams(SettingsEntity(userId: userId)),
-      ),
-    );
-    add(StreamSettingsEvent(StreamSettingsParams(userId)));
+    add(CreateSettingsEvent(createSettingsParams));
+    add(StreamSettingsEvent(streamSettingsParams));
   }
 
   final CreateSettingsUseCase _createSettingsUseCase;
@@ -53,7 +48,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   @override
   Future<void> close() async {
-    print('settings bloc stream closed');
     await _settingsSubscription?.cancel();
     return super.close();
   }
@@ -83,22 +77,22 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       (stream) {
         _settingsSubscription = stream.listen(
           (settings) {
-            //if (settings == null) return;
             add(_StreamUpdateSettingsEvent(settings));
           },
           onError: (Object error) {
-            // TODO(red): Handle error
-            print('got unhandeled pokemon stream error: $error');
+            if (kDebugMode) {
+              debugPrint('_onStreamSettings() unhandled error: $error');
+            }
           },
         );
       },
     );
   }
 
-  Future<void> _onStreamUpdateSettings(
+  void _onStreamUpdateSettings(
     _StreamUpdateSettingsEvent event,
     Emitter<SettingsState> emit,
-  ) async {
+  ) {
     emit(SettingsLoaded(event.settingsEntity));
   }
 

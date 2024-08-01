@@ -25,6 +25,24 @@ class AdminPage extends StatelessWidget {
                 if (kDebugMode) debugPrint('$result');
               },
             ),
+            ListTile(
+              title: const Text('SELECT * FROM podcasts;'),
+              onTap: () async {
+                final result =
+                    await appDatabase.managers.podcasts.get();
+
+                if (kDebugMode) debugPrint('$result');
+              },
+            ),
+            ListTile(
+              title: const Text('SELECT * FROM podcastSearchHistory;'),
+              onTap: () async {
+                final result =
+                    await appDatabase.managers.podcastSearchHistory.get();
+
+                if (kDebugMode) debugPrint('$result');
+              },
+            ),
           ],
         ),
       ],

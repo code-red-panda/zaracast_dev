@@ -1,18 +1,13 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_color_utilities/material_color_utilities.dart';
-import 'package:zaracast/src/core/dependency_injection/singletons.dart';
-import 'package:zaracast/src/core/styles/style_sheet.dart';
 import 'package:zaracast/src/core/utils/helpers/format_helper.dart';
 import 'package:zaracast/src/features/podcast/domain/entities/podcast_entity.dart';
 import 'package:zaracast/src/features/search/data/dependency_injection/search_singletons.dart';
+import 'package:zaracast/src/features/search/data/params/create_podcast_search_params.dart';
+import 'package:zaracast/src/features/search/presentation/blocs/podcast_search_history/podcast_search_history_bloc.dart';
 import 'package:zaracast/src/features/search/presentation/blocs/search/search_bloc.dart';
 import 'package:zaracast/src/features/search/presentation/widgets/podcast_search_bar.dart';
-import 'package:zaracast/src/shared/presentation/widgets/cached_network_image_builder.dart';
+import 'package:zaracast/src/features/search/presentation/widgets/podcast_search_list_tile.dart';
 import 'package:zaracast/src/shared/presentation/widgets/sliver_app_bar_builder.dart';
 
 class DiscoverPage extends StatelessWidget {
@@ -20,8 +15,11 @@ class DiscoverPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => searchBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: searchBloc),
+        BlocProvider.value(value: podcastSearchHistoryBloc),
+      ],
       child: const DiscoverPageChild(),
     );
   }
@@ -56,6 +54,7 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
       controller: _scrollController,
       physics: const BouncingScrollPhysics(),
       slivers: [
+        // TODO(red): If search bar can't be persisted header, have a search icon action that is only visible when the user scrolls up. It activates the search screen.
         SliverAppBarBuilder.largeTitle(
           title: 'Discover',
           scrollController: _scrollController,
@@ -93,48 +92,32 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
 
             return SliverList.separated(
               itemCount: podcasts.length,
-              itemBuilder: (context, index) {
-                final podcast = podcasts[index];
-                final categories = podcast.categories?.values.join(', ') ?? '';
-
-                return ListTile(
-                  leading: SizedBox(
-                    height: 64,
-                    width: 64,
-                    child: CachedNetworkImageBuilder(
-                      imageUrl: podcast.image,
-                      prefs: prefs,
-                    ),
-                  ),
-                  title: Text(
-                    podcast.title,
-                    maxLines: 2,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    categories,
-                    maxLines: 1,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: SizedBox(
-                    height: 64,
-                    width: 64,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        formatDatePublished(podcast.newestItemPubdate ?? 0),
-                      ),
-                    ),
-                  ),
-                  onTap: () => print('tap'),
-                );
-              },
               separatorBuilder: (context, index) => const Divider(
                 indent: 16,
                 endIndent: 16,
               ),
+              itemBuilder: (context, index) {
+                final podcast = podcasts[index];
+
+                return PodcastSearchListTile(
+                  podcast: podcast,
+                  trailing: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      formatDatePublished(podcast.newestItemPubdate ?? 0),
+                    ),
+                  ),
+                  onTap: () {
+                    print('nav to podcast detail page ${podcast.id}');
+
+                    final params = CreatePodcastSearchParams(podcast);
+
+                    context.read<PodcastSearchHistoryBloc>().add(
+                          CreatePodcastSearchEvent(params),
+                        );
+                  },
+                );
+              },
             );
           },
         ),

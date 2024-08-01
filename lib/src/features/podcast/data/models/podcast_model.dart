@@ -46,5 +46,45 @@ class PodcastModel extends PodcastEntity {
   factory PodcastModel.fromJson(Map<String, dynamic> json) =>
       _$PodcastModelFromJson(json);
 
+  factory PodcastModel.fromEntity(PodcastEntity entity) {
+    return PodcastModel(
+      id: entity.id,
+      podcastGuid: entity.podcastGuid,
+      title: entity.title,
+      url: entity.url,
+      originalUrl: entity.originalUrl,
+      link: entity.link,
+      description: entity.description,
+      author: entity.author,
+      ownerName: entity.ownerName,
+      image: entity.image,
+      artwork: entity.artwork,
+      lastUpdateTime: entity.lastUpdateTime,
+      lastCrawlTime: entity.lastCrawlTime,
+      lastParseTime: entity.lastParseTime,
+      lastGoodHttpStatusTime: entity.lastGoodHttpStatusTime,
+      lastHttpStatus: entity.lastHttpStatus,
+      contentType: entity.contentType,
+      language: entity.language,
+      explicit: entity.explicit,
+      type: entity.type,
+      medium: entity.medium,
+      dead: entity.dead,
+      episodeCount: entity.episodeCount,
+      crawlErrors: entity.crawlErrors,
+      parseErrors: entity.parseErrors,
+      locked: entity.locked,
+      imageUrlHash: entity.imageUrlHash,
+      itunesId: entity.itunesId,
+      itunesType: entity.itunesType,
+      generator: entity.generator,
+      chash: entity.chash,
+      categories: entity.categories,
+      value: entity.value,
+      funding: entity.funding,
+      newestItemPubdate: entity.newestItemPubdate,
+    );
+  }
+
   Map<String, dynamic> toJson() => _$PodcastModelToJson(this);
 }

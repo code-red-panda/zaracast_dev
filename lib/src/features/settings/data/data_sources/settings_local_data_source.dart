@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
-import 'package:zaracast/src/core/errors/exceptions.dart';
 import 'package:zaracast/src/core/utils/drift/app_database.dart';
 import 'package:zaracast/src/features/settings/data/models/settings_model.dart';
 import 'package:zaracast/src/features/settings/data/params/create_settings_params.dart';
@@ -32,7 +31,7 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
       mode: InsertMode.insertOrRollback,
     );
 
-    await appDatabase.helper.execute<void>(() async => operation);
+    await appDatabase.execute<void>(() async => operation);
   }
 
   @override
@@ -56,7 +55,7 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
           ),
         );
 
-    await appDatabase.helper.execute<void>(() async => operation);
+    await appDatabase.execute<void>(() async => operation);
   }
 
   @override
@@ -69,6 +68,6 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
           ),
         );
 
-    await appDatabase.helper.execute<void>(() async => operation);
+    await appDatabase.execute<void>(() async => operation);
   }
 }

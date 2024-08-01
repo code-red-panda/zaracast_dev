@@ -11,9 +11,8 @@ part 'search_event.dart';
 part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  SearchBloc(
-    SearchPodcastsUseCase searchPodcasts,
-  )   : _searchPodcastsUseCase = searchPodcasts,
+  SearchBloc(SearchPodcastsUseCase searchPodcasts)
+      : _searchPodcastsUseCase = searchPodcasts,
         super(const SearchInitial()) {
     on<SearchPodcastsEvent>(_onSearchPodcasts);
     on<ClearSearchEvent>(_onClearSearch);
@@ -25,7 +24,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchPodcastsEvent event,
     Emitter<SearchState> emit,
   ) async {
-    print('SearchPodcastsEvent: ${event.params.searchTerm}');
     if (state is SearchLoading) return;
 
     emit(const SearchLoading());

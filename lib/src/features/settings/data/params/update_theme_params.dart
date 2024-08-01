@@ -1,4 +1,4 @@
-import 'package:zaracast/src/core/themes/material_theme.dart';
+import 'package:zaracast/src/core/themes/material_theme_builder.dart';
 
 class UpdateThemeParams {
   const UpdateThemeParams({required this.userId, required this.theme});

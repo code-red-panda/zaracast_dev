@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:zaracast/src/core/themes/material_theme.dart';
+import 'package:zaracast/src/core/themes/material_theme_builder.dart';
 
 class SettingsEntity extends Equatable {
   const SettingsEntity({

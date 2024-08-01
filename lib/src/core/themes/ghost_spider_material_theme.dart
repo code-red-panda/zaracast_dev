@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zaracast/src/core/themes/material_theme.dart';
+import 'package:zaracast/src/core/themes/base_material_theme.dart';
 
 class GhostSpiderMaterialTheme extends BaseMaterialTheme {
   const GhostSpiderMaterialTheme(super.textTheme);
@@ -124,7 +124,7 @@ class GhostSpiderMaterialTheme extends BaseMaterialTheme {
           bodyColor: colorScheme.onSurface,
           displayColor: colorScheme.onSurface,
         ),
-        scaffoldBackgroundColor: colorScheme.background,
+        scaffoldBackgroundColor: colorScheme.surface,
         canvasColor: colorScheme.surface,
       );
 }

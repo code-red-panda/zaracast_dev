@@ -74,4 +74,8 @@ const bottomNavItems = [
     icon: Icon(Icons.settings),
     label: 'Settings',
   ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.admin_panel_settings),
+    label: 'Admin',
+  ),
 ];

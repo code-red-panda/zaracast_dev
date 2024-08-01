@@ -6,6 +6,7 @@ import 'package:zaracast/src/core/router/stateful_shell_scaffold.dart';
 import 'package:zaracast/src/features/auth/presentation/pages/otp_page.dart';
 import 'package:zaracast/src/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:zaracast/src/features/discover/presentation/pages/discover_page.dart';
+import 'package:zaracast/src/features/settings/presentation/pages/admin_page.dart';
 import 'package:zaracast/src/features/settings/presentation/pages/settings_page.dart';
 
 GoRouter buildGoRouter() {
@@ -45,6 +46,14 @@ GoRouter buildGoRouter() {
               GoRoute(
                 path: '/settings',
                 builder: (context, state) => const SettingsPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/admin',
+                builder: (context, state) => const AdminPage(),
               ),
             ],
           ),

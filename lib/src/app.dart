@@ -46,8 +46,8 @@ class MyAppChild extends StatelessWidget {
         BaseMaterialTheme theme = ghostSpiderTheme;
 
         if (state is SettingsLoaded) {
-          themeMode = state.themeMode;
-          switch (state.theme) {
+          themeMode = state.settings.themeMode;
+          switch (state.settings.theme) {
             case MaterialTheme.ghostSpider:
               theme = ghostSpiderTheme;
             case MaterialTheme.ironMan:

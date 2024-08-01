@@ -17,13 +17,12 @@ class SettingsLoading extends SettingsState {
 }
 
 class SettingsLoaded extends SettingsState {
-  const SettingsLoaded(this.theme, this.themeMode);
+  const SettingsLoaded(this.settings);
 
-  final MaterialTheme theme;
-  final ThemeMode themeMode;
+  final SettingsEntity settings;
 
   @override
-  List<Object> get props => [theme, themeMode];
+  List<Object> get props => [settings];
 }
 
 class SettingsError extends SettingsState {

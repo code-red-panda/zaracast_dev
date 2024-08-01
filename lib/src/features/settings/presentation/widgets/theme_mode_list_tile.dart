@@ -11,7 +11,7 @@ class ThemeModeListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<SettingsBloc, SettingsState, ThemeMode>(
       selector: (state) =>
-          state is SettingsLoaded ? state.themeMode : ThemeMode.system,
+          state is SettingsLoaded ? state.settings.themeMode : ThemeMode.system,
       builder: (context, state) {
         var themeName = 'System';
 
@@ -61,7 +61,7 @@ class ThemeModeListTile extends StatelessWidget {
                 ],
               );
               if (themeMode != null) {
-                final params = UpdateThemeModeParams(themeMode: themeMode);
+                final params = UpdateThemeModeParams(themeMode);
 
                 if (!context.mounted) return;
                 context.read<SettingsBloc>().add(UpdateThemeModeEvent(params));

@@ -11,8 +11,9 @@ class ThemeListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<SettingsBloc, SettingsState, MaterialTheme>(
-      selector: (state) =>
-          state is SettingsLoaded ? state.theme : MaterialTheme.ghostSpider,
+      selector: (state) => state is SettingsLoaded
+          ? state.settings.theme
+          : MaterialTheme.ghostSpider,
       builder: (context, state) {
         var themeName = 'Ghost Spider';
 
@@ -65,7 +66,7 @@ class ThemeListTile extends StatelessWidget {
               );
 
               if (theme != null) {
-                final params = UpdateThemeParams(theme: theme);
+                final params = UpdateThemeParams(theme);
 
                 if (!context.mounted) return;
                 context.read<SettingsBloc>().add(UpdateThemeEvent(params));

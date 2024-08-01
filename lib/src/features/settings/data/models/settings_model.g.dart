@@ -8,12 +8,16 @@ part of 'settings_model.dart';
 
 SettingsModel _$SettingsModelFromJson(Map<String, dynamic> json) =>
     SettingsModel(
-      theme: $enumDecode(_$MaterialThemeEnumMap, json['theme']),
-      themeMode: $enumDecode(_$ThemeModeEnumMap, json['themeMode']),
+      userId: json['userId'] as String,
+      theme: $enumDecodeNullable(_$MaterialThemeEnumMap, json['theme']) ??
+          MaterialTheme.ghostSpider,
+      themeMode: $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
+          ThemeMode.system,
     );
 
 Map<String, dynamic> _$SettingsModelToJson(SettingsModel instance) =>
     <String, dynamic>{
+      'userId': instance.userId,
       'theme': _$MaterialThemeEnumMap[instance.theme]!,
       'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
     };
@@ -21,6 +25,7 @@ Map<String, dynamic> _$SettingsModelToJson(SettingsModel instance) =>
 const _$MaterialThemeEnumMap = {
   MaterialTheme.ghostSpider: 'ghostSpider',
   MaterialTheme.ironMan: 'ironMan',
+  MaterialTheme.hulk: 'hulk',
 };
 
 const _$ThemeModeEnumMap = {

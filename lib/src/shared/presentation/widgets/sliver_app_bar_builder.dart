@@ -9,21 +9,21 @@ import 'package:flutter/material.dart';
 class SliverAppBarBuilder extends StatefulWidget {
   const SliverAppBarBuilder({
     required this.title,
-    required this.scrollController,
+    this.scrollController,
     this.bottom,
     super.key,
   }) : largeTitle = false;
 
   const SliverAppBarBuilder.largeTitle({
     required this.title,
-    required this.scrollController,
+    required ScrollController this.scrollController,
     this.bottom,
     super.key,
   }) : largeTitle = true;
 
   final String title;
-  final ScrollController scrollController;
   final bool largeTitle;
+  final ScrollController? scrollController;
   final PreferredSizeWidget? bottom;
 
   @override
@@ -44,12 +44,12 @@ class _SliverAppBarBuilderState extends State<SliverAppBarBuilder> {
       _expandedHeight = 152;
       _flexibleSpaceOpacity = 1;
       _titleOpacity = 0;
-      widget.scrollController.addListener(_scrollListener);
+      widget.scrollController?.addListener(_scrollListener);
     }
   }
 
   void _scrollListener() {
-    final offset = widget.scrollController.offset;
+    final offset = widget.scrollController?.offset ?? 0;
 
     setState(() {
       _flexibleSpaceOpacity =
@@ -65,10 +65,9 @@ class _SliverAppBarBuilderState extends State<SliverAppBarBuilder> {
 
   @override
   void dispose() {
-    if (widget.largeTitle) {
-      widget.scrollController.removeListener(_scrollListener);
-    }
-    widget.scrollController.dispose();
+    widget.scrollController?.removeListener(_scrollListener);
+    widget.scrollController?.dispose();
+
     super.dispose();
   }
 

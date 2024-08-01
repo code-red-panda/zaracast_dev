@@ -3,11 +3,12 @@
 part of 'app_database.dart';
 
 // ignore_for_file: type=lint
-class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
+class $UserSettingsTable extends UserSettings
+    with TableInfo<$UserSettingsTable, UserSetting> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SettingsTable(this.attachedDatabase, [this._alias]);
+  $UserSettingsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
   late final GeneratedColumn<String> userId = GeneratedColumn<String>(
@@ -30,9 +31,9 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'settings';
+  static const String $name = 'user_settings';
   @override
-  VerificationContext validateIntegrity(Insertable<Setting> instance,
+  VerificationContext validateIntegrity(Insertable<UserSetting> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -60,9 +61,9 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   @override
   Set<GeneratedColumn> get $primaryKey => {userId};
   @override
-  Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
+  UserSetting map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Setting(
+    return UserSetting(
       userId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
       theme: attachedDatabase.typeMapping
@@ -73,16 +74,16 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   }
 
   @override
-  $SettingsTable createAlias(String alias) {
-    return $SettingsTable(attachedDatabase, alias);
+  $UserSettingsTable createAlias(String alias) {
+    return $UserSettingsTable(attachedDatabase, alias);
   }
 }
 
-class Setting extends DataClass implements Insertable<Setting> {
+class UserSetting extends DataClass implements Insertable<UserSetting> {
   final String userId;
   final String theme;
   final String themeMode;
-  const Setting(
+  const UserSetting(
       {required this.userId, required this.theme, required this.themeMode});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -93,18 +94,18 @@ class Setting extends DataClass implements Insertable<Setting> {
     return map;
   }
 
-  SettingsCompanion toCompanion(bool nullToAbsent) {
-    return SettingsCompanion(
+  UserSettingsCompanion toCompanion(bool nullToAbsent) {
+    return UserSettingsCompanion(
       userId: Value(userId),
       theme: Value(theme),
       themeMode: Value(themeMode),
     );
   }
 
-  factory Setting.fromJson(Map<String, dynamic> json,
+  factory UserSetting.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Setting(
+    return UserSetting(
       userId: serializer.fromJson<String>(json['userId']),
       theme: serializer.fromJson<String>(json['theme']),
       themeMode: serializer.fromJson<String>(json['themeMode']),
@@ -120,14 +121,14 @@ class Setting extends DataClass implements Insertable<Setting> {
     };
   }
 
-  Setting copyWith({String? userId, String? theme, String? themeMode}) =>
-      Setting(
+  UserSetting copyWith({String? userId, String? theme, String? themeMode}) =>
+      UserSetting(
         userId: userId ?? this.userId,
         theme: theme ?? this.theme,
         themeMode: themeMode ?? this.themeMode,
       );
-  Setting copyWithCompanion(SettingsCompanion data) {
-    return Setting(
+  UserSetting copyWithCompanion(UserSettingsCompanion data) {
+    return UserSetting(
       userId: data.userId.present ? data.userId.value : this.userId,
       theme: data.theme.present ? data.theme.value : this.theme,
       themeMode: data.themeMode.present ? data.themeMode.value : this.themeMode,
@@ -136,7 +137,7 @@ class Setting extends DataClass implements Insertable<Setting> {
 
   @override
   String toString() {
-    return (StringBuffer('Setting(')
+    return (StringBuffer('UserSetting(')
           ..write('userId: $userId, ')
           ..write('theme: $theme, ')
           ..write('themeMode: $themeMode')
@@ -149,24 +150,24 @@ class Setting extends DataClass implements Insertable<Setting> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Setting &&
+      (other is UserSetting &&
           other.userId == this.userId &&
           other.theme == this.theme &&
           other.themeMode == this.themeMode);
 }
 
-class SettingsCompanion extends UpdateCompanion<Setting> {
+class UserSettingsCompanion extends UpdateCompanion<UserSetting> {
   final Value<String> userId;
   final Value<String> theme;
   final Value<String> themeMode;
   final Value<int> rowid;
-  const SettingsCompanion({
+  const UserSettingsCompanion({
     this.userId = const Value.absent(),
     this.theme = const Value.absent(),
     this.themeMode = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  SettingsCompanion.insert({
+  UserSettingsCompanion.insert({
     required String userId,
     required String theme,
     required String themeMode,
@@ -174,7 +175,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
   })  : userId = Value(userId),
         theme = Value(theme),
         themeMode = Value(themeMode);
-  static Insertable<Setting> custom({
+  static Insertable<UserSetting> custom({
     Expression<String>? userId,
     Expression<String>? theme,
     Expression<String>? themeMode,
@@ -188,12 +189,12 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     });
   }
 
-  SettingsCompanion copyWith(
+  UserSettingsCompanion copyWith(
       {Value<String>? userId,
       Value<String>? theme,
       Value<String>? themeMode,
       Value<int>? rowid}) {
-    return SettingsCompanion(
+    return UserSettingsCompanion(
       userId: userId ?? this.userId,
       theme: theme ?? this.theme,
       themeMode: themeMode ?? this.themeMode,
@@ -221,7 +222,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
 
   @override
   String toString() {
-    return (StringBuffer('SettingsCompanion(')
+    return (StringBuffer('UserSettingsCompanion(')
           ..write('userId: $userId, ')
           ..write('theme: $theme, ')
           ..write('themeMode: $themeMode, ')
@@ -234,50 +235,52 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
-  late final $SettingsTable settings = $SettingsTable(this);
+  late final $UserSettingsTable userSettings = $UserSettingsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [settings];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [userSettings];
 }
 
-typedef $$SettingsTableCreateCompanionBuilder = SettingsCompanion Function({
+typedef $$UserSettingsTableCreateCompanionBuilder = UserSettingsCompanion
+    Function({
   required String userId,
   required String theme,
   required String themeMode,
   Value<int> rowid,
 });
-typedef $$SettingsTableUpdateCompanionBuilder = SettingsCompanion Function({
+typedef $$UserSettingsTableUpdateCompanionBuilder = UserSettingsCompanion
+    Function({
   Value<String> userId,
   Value<String> theme,
   Value<String> themeMode,
   Value<int> rowid,
 });
 
-class $$SettingsTableTableManager extends RootTableManager<
+class $$UserSettingsTableTableManager extends RootTableManager<
     _$AppDatabase,
-    $SettingsTable,
-    Setting,
-    $$SettingsTableFilterComposer,
-    $$SettingsTableOrderingComposer,
-    $$SettingsTableCreateCompanionBuilder,
-    $$SettingsTableUpdateCompanionBuilder> {
-  $$SettingsTableTableManager(_$AppDatabase db, $SettingsTable table)
+    $UserSettingsTable,
+    UserSetting,
+    $$UserSettingsTableFilterComposer,
+    $$UserSettingsTableOrderingComposer,
+    $$UserSettingsTableCreateCompanionBuilder,
+    $$UserSettingsTableUpdateCompanionBuilder> {
+  $$UserSettingsTableTableManager(_$AppDatabase db, $UserSettingsTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           filteringComposer:
-              $$SettingsTableFilterComposer(ComposerState(db, table)),
+              $$UserSettingsTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
-              $$SettingsTableOrderingComposer(ComposerState(db, table)),
+              $$UserSettingsTableOrderingComposer(ComposerState(db, table)),
           updateCompanionCallback: ({
             Value<String> userId = const Value.absent(),
             Value<String> theme = const Value.absent(),
             Value<String> themeMode = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
-              SettingsCompanion(
+              UserSettingsCompanion(
             userId: userId,
             theme: theme,
             themeMode: themeMode,
@@ -289,7 +292,7 @@ class $$SettingsTableTableManager extends RootTableManager<
             required String themeMode,
             Value<int> rowid = const Value.absent(),
           }) =>
-              SettingsCompanion.insert(
+              UserSettingsCompanion.insert(
             userId: userId,
             theme: theme,
             themeMode: themeMode,
@@ -298,9 +301,9 @@ class $$SettingsTableTableManager extends RootTableManager<
         ));
 }
 
-class $$SettingsTableFilterComposer
-    extends FilterComposer<_$AppDatabase, $SettingsTable> {
-  $$SettingsTableFilterComposer(super.$state);
+class $$UserSettingsTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $UserSettingsTable> {
+  $$UserSettingsTableFilterComposer(super.$state);
   ColumnFilters<String> get userId => $state.composableBuilder(
       column: $state.table.userId,
       builder: (column, joinBuilders) =>
@@ -317,9 +320,9 @@ class $$SettingsTableFilterComposer
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $$SettingsTableOrderingComposer
-    extends OrderingComposer<_$AppDatabase, $SettingsTable> {
-  $$SettingsTableOrderingComposer(super.$state);
+class $$UserSettingsTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $UserSettingsTable> {
+  $$UserSettingsTableOrderingComposer(super.$state);
   ColumnOrderings<String> get userId => $state.composableBuilder(
       column: $state.table.userId,
       builder: (column, joinBuilders) =>
@@ -339,6 +342,6 @@ class $$SettingsTableOrderingComposer
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $$SettingsTableTableManager get settings =>
-      $$SettingsTableTableManager(_db, _db.settings);
+  $$UserSettingsTableTableManager get userSettings =>
+      $$UserSettingsTableTableManager(_db, _db.userSettings);
 }

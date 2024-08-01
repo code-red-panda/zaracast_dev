@@ -7,7 +7,11 @@ part 'settings_model.g.dart';
 
 @JsonSerializable()
 class SettingsModel extends SettingsEntity {
-  const SettingsModel({required super.theme, required super.themeMode});
+  const SettingsModel({
+    required super.userId,
+    required super.theme,
+    required super.themeMode,
+  });
 
   factory SettingsModel.fromJson(Map<String, dynamic> json) =>
       _$SettingsModelFromJson(json);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zaracast/src/core/constants/constants.dart';
 import 'package:zaracast/src/features/settings/data/params/update_theme_mode_params.dart';
 import 'package:zaracast/src/features/settings/presentation/blocs/settings_bloc.dart';
 import 'package:zaracast/src/shared/presentation/utils/bottom_sheets.dart';
@@ -61,7 +62,10 @@ class ThemeModeListTile extends StatelessWidget {
                 ],
               );
               if (themeMode != null) {
-                final params = UpdateThemeModeParams(themeMode);
+                final params = UpdateThemeModeParams(
+                  userId: placeHolderUserId,
+                  themeMode: themeMode,
+                );
 
                 if (!context.mounted) return;
                 context.read<SettingsBloc>().add(UpdateThemeModeEvent(params));

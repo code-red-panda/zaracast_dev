@@ -48,17 +48,27 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
 
   @override
   Future<void> updateTheme(UpdateThemeParams params) async {
-    try {} catch (e, stackTrace) {
-      throw LocalException.unknownError(stackTrace: stackTrace);
-    }
+    final operation = appDatabase.managers.userSettings
+        .filter((f) => f.userId(params.userId))
+        .update(
+          (companion) => companion(
+            theme: Value(params.theme.name),
+          ),
+        );
+
+    await appDatabase.helper.execute<void>(() async => operation);
   }
 
   @override
   Future<void> updateThemeMode(UpdateThemeModeParams params) async {
-    try {
-      // await s2.updateThemeMode(params);
-    } catch (e, stackTrace) {
-      throw LocalException.unknownError(stackTrace: stackTrace);
-    }
+    final operation = appDatabase.managers.userSettings
+        .filter((f) => f.userId(params.userId))
+        .update(
+          (companion) => companion(
+            themeMode: Value(params.themeMode.name),
+          ),
+        );
+
+    await appDatabase.helper.execute<void>(() async => operation);
   }
 }

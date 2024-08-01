@@ -106,21 +106,21 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     UpdateThemeEvent event,
     Emitter<SettingsState> emit,
   ) async {
-    //final result = await _updateThemeUseCase.call(event.params);
-    //if (state is! SettingsLoaded) return;
+    final result = await _updateThemeUseCase.call(event.params);
 
-    //final currentS = state as SettingsLoaded;
-    //emit(SettingsLoaded(event.params.theme, currentState.themeMode));
+    if (result.isLeft) {
+      emit(SettingsError(result.left.userMessage));
+    }
   }
 
   Future<void> _onUpdateThemeMode(
     UpdateThemeModeEvent event,
     Emitter<SettingsState> emit,
   ) async {
-    //final result = await _updateThemeModeUseCase.call(event.params);
-    //if (state is! SettingsLoaded) return;
+    final result = await _updateThemeModeUseCase.call(event.params);
 
-    // final currentState = state as SettingsLoaded;
-    // emit(SettingsLoaded(currentState.theme, event.params.themeMode));
+    if (result.isLeft) {
+      emit(SettingsError(result.left.userMessage));
+    }
   }
 }

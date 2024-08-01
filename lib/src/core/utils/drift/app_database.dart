@@ -5,7 +5,7 @@ import 'package:zaracast/src/core/utils/drift/drift_helper.dart';
 part 'app_database.g.dart';
 
 class UserSettings extends Table {
-  TextColumn get userId => text()();//.references(Users, #id)();
+  TextColumn get userId => text()(); //.references(Users, #id)();
   TextColumn get theme => text()();
   TextColumn get themeMode => text()();
 

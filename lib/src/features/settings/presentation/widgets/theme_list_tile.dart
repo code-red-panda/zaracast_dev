@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zaracast/src/core/constants/constants.dart';
 import 'package:zaracast/src/core/themes/material_theme.dart';
 import 'package:zaracast/src/features/settings/data/params/update_theme_params.dart';
 import 'package:zaracast/src/features/settings/presentation/blocs/settings_bloc.dart';
@@ -66,7 +67,10 @@ class ThemeListTile extends StatelessWidget {
               );
 
               if (theme != null) {
-                final params = UpdateThemeParams(theme);
+                final params = UpdateThemeParams(
+                  userId: placeHolderUserId,
+                  theme: theme,
+                );
 
                 if (!context.mounted) return;
                 context.read<SettingsBloc>().add(UpdateThemeEvent(params));

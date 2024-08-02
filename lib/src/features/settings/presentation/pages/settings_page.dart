@@ -40,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          SliverAppBarBuilder.largeTitle(
+          SliverAppBarBuilder.large(
             title: 'Settings',
             scrollController: _scrollController,
           ),

@@ -140,16 +140,17 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
                           indent: 16,
                           endIndent: 16,
                         ),
-                        itemBuilder: (context, index) => PodcastSearchListTile(
-                          podcast: searchHistory[index],
-                          onTap: () {
-                            if (_controller.isAttached) {
-                              _controller.closeView(null);
-                            }
-                            
-                            context.go('/discover/${searchHistory[index].id}');
-                          },
-                        ),
+                        itemBuilder: (context, index) {
+                          final podcast = searchHistory[index];
+
+                          return PodcastSearchListTile(
+                            podcast: podcast,
+                            onTap: () => context.push(
+                              '/discover/${podcast.id}',
+                              extra: {'title': podcast.title},
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],

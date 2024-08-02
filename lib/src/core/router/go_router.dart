@@ -8,14 +8,27 @@ import 'package:zaracast/src/features/podcast_detail/presentation/pages/podcast_
 import 'package:zaracast/src/features/settings/presentation/pages/admin_page.dart';
 import 'package:zaracast/src/features/settings/presentation/pages/settings_page.dart';
 
+final discoverKey = GlobalKey<NavigatorState>();
+final settingsKey = GlobalKey<NavigatorState>();
+
 GoRouter buildGoRouter() {
   /// Parse an integer from a path parameter.
   ///
   /// Return the integer if parsed, otherwise return the default value.
-  int getIntParam(String? key, {int defaultValue = 0}) {
+  int getIntFromParam(String? key, {int defaultValue = 0}) {
     if (key == null) return defaultValue;
 
     return int.tryParse(key) ?? defaultValue;
+  }
+
+  String? getStringFromExtra(Object? extra, String key) {
+    if (extra == null) return null;
+
+    if (extra is Map<String, dynamic>) {
+      return extra[key] as String?;
+    } else {
+      return null;
+    }
   }
 
   return GoRouter(
@@ -31,6 +44,7 @@ GoRouter buildGoRouter() {
         builder: (context, state, child) => StatefulShellScaffold(child),
         branches: <StatefulShellBranch>[
           StatefulShellBranch(
+            navigatorKey: discoverKey,
             routes: <RouteBase>[
               GoRoute(
                 path: '/discover',
@@ -39,8 +53,8 @@ GoRouter buildGoRouter() {
                   GoRoute(
                     path: ':id',
                     builder: (context, state) {
-                      final id = getIntParam(state.pathParameters['id']);
-                      final title = state.pathParameters['title'];
+                      final id = getIntFromParam(state.pathParameters['id']);
+                      final title = getStringFromExtra(state.extra, 'title');
 
                       return PodcastDetailPage(id: id, title: title);
                     },
@@ -50,6 +64,7 @@ GoRouter buildGoRouter() {
             ],
           ),
           StatefulShellBranch(
+            navigatorKey: settingsKey,
             routes: <RouteBase>[
               GoRoute(
                 path: '/settings',

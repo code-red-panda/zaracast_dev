@@ -10,24 +10,11 @@ Future<T?> zShowModalBottomSheet<T>(
     enableDrag: false,
     builder: (BuildContext context) {
       final children = items.asMap().entries.map((entry) {
-        final index = entry.key;
         final item = entry.value;
         return ListTile(
           leading: item.icon != null ? Icon(item.icon) : null,
           title: Text(item.name),
           selected: item.selected,
-          shape: index == 0
-              // For the first item in the list, round the top corners to half
-              // of the M3 top corner radius spec for a nice look.
-              //
-              // https://m3.material.io/components/bottom-sheets/overview#2cce5bae-eb83-40b0-8e52-5d0cfaa9b795
-              ? const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(14),
-                    topRight: Radius.circular(14),
-                  ),
-                )
-              : null,
           onTap: () => Navigator.of(context).pop(item.value),
         );
       }).toList();
@@ -35,8 +22,21 @@ Future<T?> zShowModalBottomSheet<T>(
       return Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          children: [...children],
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            const Divider(indent: 16, endIndent: 16),
+            ...children
+          ],
         ),
       );
     },

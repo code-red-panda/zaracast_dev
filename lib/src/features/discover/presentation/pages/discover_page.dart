@@ -48,6 +48,7 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -56,7 +57,7 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
     return CustomScrollView(
       controller: _scrollController,
       slivers: [
-        SliverAppBarBuilder.largeTitle(
+        SliverAppBarBuilder.large(
           title: 'Discover',
           scrollController: _scrollController,
           animateActions: true,
@@ -118,7 +119,10 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
                     ),
                   ),
                   onTap: () {
-                    context.go('/discover/${podcast.id}');
+                    context.push(
+                      '/discover/${podcast.id}',
+                      extra: {'title': podcast.title},
+                    );
 
                     final params = CreatePodcastSearchParams(podcast);
 

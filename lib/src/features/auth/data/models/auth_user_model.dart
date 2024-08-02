@@ -5,7 +5,12 @@ part 'auth_user_model.g.dart';
 
 @JsonSerializable()
 class AuthUserModel extends AuthUserEntity {
-  AuthUserModel({required super.id, super.name, super.email, super.phone});
+  const AuthUserModel({
+    required super.id,
+    super.name,
+    super.email,
+    super.phone,
+  });
 
   factory AuthUserModel.fromJson(Map<String, dynamic> json) =>
       _$AuthUserModelFromJson(json);

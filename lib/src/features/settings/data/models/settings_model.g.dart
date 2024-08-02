@@ -18,8 +18,8 @@ SettingsModel _$SettingsModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SettingsModelToJson(SettingsModel instance) =>
     <String, dynamic>{
       'userId': instance.userId,
-      'theme': _$MaterialThemeEnumMap[instance.theme]!,
-      'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
+      'theme': _$MaterialThemeEnumMap[instance.theme],
+      'themeMode': _$ThemeModeEnumMap[instance.themeMode],
     };
 
 const _$MaterialThemeEnumMap = {

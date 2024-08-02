@@ -35,10 +35,12 @@ class DiscoverPageChild extends StatefulWidget {
 class _DiscoverPageChildState extends State<DiscoverPageChild>
     with SingleTickerProviderStateMixin {
   late ScrollController _scrollController;
+  late SearchController _searchController;
 
   @override
   void initState() {
     _scrollController = ScrollController();
+    _searchController = SearchController();
     super.initState();
   }
 
@@ -52,12 +54,19 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
   Widget build(BuildContext context) {
     return CustomScrollView(
       controller: _scrollController,
-      physics: const BouncingScrollPhysics(),
       slivers: [
-        // TODO(red): If search bar can't be persisted header, have a search icon action that is only visible when the user scrolls up. It activates the search screen.
         SliverAppBarBuilder.largeTitle(
           title: 'Discover',
           scrollController: _scrollController,
+          animateActions: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                _searchController.openView();
+              },
+            ),
+          ],
         ),
         BlocBuilder<SearchBloc, SearchState>(
           buildWhen: (previous, current) => previous != current,
@@ -75,10 +84,10 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
             );
           },
         ),
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
-            child: PodcastSearchBar(),
+            padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
+            child: PodcastSearchBar(_searchController),
           ),
         ),
         BlocBuilder<SearchBloc, SearchState>(
@@ -108,7 +117,7 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
                     ),
                   ),
                   onTap: () {
-                    print('nav to podcast detail page ${podcast.id}');
+                   // print('nav to podcast detail page ${podcast.id}');
 
                     final params = CreatePodcastSearchParams(podcast);
 

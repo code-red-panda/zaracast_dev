@@ -2,29 +2,33 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-/// JAKE YOU ARE HERE, ADD PERSISTENT HEADER TO THIS WIDGET TO ATTACH SEARCH BAR
-
-/// Padding and heights came from M3 https://m3.material.io/components/top-app-bar/specs
-
+/// Padding and heights came from M3 specs:
+/// https://m3.material.io/components/top-app-bar/specs
 class SliverAppBarBuilder extends StatefulWidget {
   const SliverAppBarBuilder({
     required this.title,
     this.scrollController,
-    this.bottom,
+    this.actions,
     super.key,
-  }) : largeTitle = false;
+  })  : isLargeTitle = false,
+        animateActions = false;
 
   const SliverAppBarBuilder.largeTitle({
     required this.title,
     required ScrollController this.scrollController,
-    this.bottom,
+    this.animateActions = false,
+    this.actions,
     super.key,
-  }) : largeTitle = true;
+  }) : isLargeTitle = true;
 
   final String title;
-  final bool largeTitle;
+  final bool isLargeTitle;
+
+  // If [animateActions] is true, the actions will fade in and out based on the
+  // scroll position with the title.
+  final bool animateActions;
   final ScrollController? scrollController;
-  final PreferredSizeWidget? bottom;
+  final List<Widget>? actions;
 
   @override
   State<SliverAppBarBuilder> createState() => _SliverAppBarBuilderState();
@@ -38,7 +42,8 @@ class _SliverAppBarBuilderState extends State<SliverAppBarBuilder> {
   @override
   void initState() {
     super.initState();
-    if (widget.largeTitle) {
+
+    if (widget.isLargeTitle) {
       // The [_expandedHeight] is following M3 Medium top app bar sizing
       // https://m3.material.io/components/top-app-bar/specs#3f23d082-0dd6-4358-a6c9-2c6d72f1cd7a
       _expandedHeight = 152;
@@ -73,14 +78,24 @@ class _SliverAppBarBuilderState extends State<SliverAppBarBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.largeTitle
+    return widget.isLargeTitle
         ? _buildLargeTitleAppBar()
         : _buildSmallTitleAppBar();
   }
 
   SliverAppBar _buildLargeTitleAppBar() {
     return SliverAppBar(
-      bottom: widget.bottom,
+      actions: widget.animateActions
+          ? widget.actions
+              ?.map(
+                (e) => AnimatedOpacity(
+                  opacity: _titleOpacity,
+                  duration: const Duration(milliseconds: 100),
+                  child: e,
+                ),
+              )
+              .toList()
+          : widget.actions,
       expandedHeight: _expandedHeight,
       flexibleSpace: ClipRRect(
         child: BackdropFilter(
@@ -110,7 +125,7 @@ class _SliverAppBarBuilderState extends State<SliverAppBarBuilder> {
 
   SliverAppBar _buildSmallTitleAppBar() {
     return SliverAppBar(
-      bottom: widget.bottom,
+      actions: widget.actions,
       pinned: true,
       title: Text(widget.title),
     );

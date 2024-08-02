@@ -29,10 +29,12 @@ class SearchLocalDataSourceImpl implements SearchLocalDataSource {
   Future<void> createPodcastSearch(CreatePodcastSearchParams params) async {
     final json = PodcastModel.fromEntity(params.podcastEntity).toJson();
 
-    // TODO(red): Can this be assigned to operation and pass to the execute method to handle errors?
+    // TODO(red): Can this be assigned to operation and pass to the execute 
+    //  method to handle errors?
     await appDatabase.transaction(() async {
       await appDatabase.managers.podcasts.create(
-        // TODO(red): The table name is Podcasts. I don't understand where it's getting the singular "Podcast" from.
+        // TODO(red): The table name is Podcasts. I don't understand where 
+        //  it's getting the singular "Podcast" from.
         (companion) => Podcast.fromJson(json),
         mode: InsertMode.insertOrIgnore,
       );

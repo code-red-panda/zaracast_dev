@@ -3,9 +3,6 @@ import 'package:zaracast/src/core/errors/failure.dart';
 import 'package:zaracast/src/core/utils/use_case_types.dart';
 import 'package:zaracast/src/features/podcast/domain/entities/podcast_entity.dart';
 import 'package:zaracast/src/features/search/domain/repositories/search_repository.dart';
-import 'package:zaracast/src/features/settings/data/params/stream_settings_params.dart';
-import 'package:zaracast/src/features/settings/domain/entities/settings_entity.dart';
-import 'package:zaracast/src/features/settings/domain/repositories/settings_repository.dart';
 import 'package:zaracast/src/shared/data/params/no_params.dart';
 
 class StreamPodcastSearchUseCase

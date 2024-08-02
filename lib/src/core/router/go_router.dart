@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaracast/src/core/router/stateful_shell_scaffold.dart';
@@ -10,10 +8,6 @@ import 'package:zaracast/src/features/settings/presentation/pages/admin_page.dar
 import 'package:zaracast/src/features/settings/presentation/pages/settings_page.dart';
 
 GoRouter buildGoRouter() {
-  FutureOr<String?> redirect(BuildContext context, GoRouterState state) async {
-    return null;
-  }
-
   return GoRouter(
     errorPageBuilder: (context, state) => MaterialPage<void>(
       key: state.pageKey,

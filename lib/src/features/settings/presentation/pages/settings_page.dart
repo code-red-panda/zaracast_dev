@@ -39,7 +39,6 @@ class _SettingsPageState extends State<SettingsPage> {
       },
       child: CustomScrollView(
         controller: _scrollController,
-        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBarBuilder.largeTitle(
             title: 'Settings',

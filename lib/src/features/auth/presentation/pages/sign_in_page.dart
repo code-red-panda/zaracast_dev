@@ -22,8 +22,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final spacer = SizedBox(height: 16);
+    const spacer = SizedBox(height: 16);
 
     final countryData = PhoneCountryData.fromMap({
       'country': 'United States',
@@ -68,7 +67,7 @@ class _SignInPageState extends State<SignInPage> {
                 formKey: signInFormKey,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // TODO: Add support for phone auth beyond just the US.
+                  // TODO(red): Add support for phone auth beyond just the US.)
                   /*
                   CountryDropdown(
                     printCountryName: true,
@@ -102,7 +101,7 @@ class _SignInPageState extends State<SignInPage> {
                     },
                     validator: ValidationBuilder().phone().build(),
                   ),
-                  // TODO: Add support for email sign in.
+                  // TODO(red): Add support for email sign in.
                   /*
                   CustomTextFormField(
                     autocorrect: false,

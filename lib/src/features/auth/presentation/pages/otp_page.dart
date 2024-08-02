@@ -28,8 +28,7 @@ class OtpPage extends StatelessWidget {
       buildWhen: (previous, current) =>
           [EnterEmailOtp, EnterPhoneOtp].contains(current.runtimeType),
       builder: (context, state) {
-        final height = MediaQuery.of(context).size.height;
-        final spacer = SizedBox(height: 16);
+        const spacer = SizedBox(height: 16);
         var otpTarget = '';
 
         if (state is EnterEmailOtp) {

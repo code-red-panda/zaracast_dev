@@ -58,7 +58,7 @@ class ServerException implements Exception {
   @override
   String toString() {
     final buffer = StringBuffer()
-      ..write('\Server Exception\n===============\n'
+      ..write('Server Exception\n===============\n'
           '$message (status code: $statusCode)\n');
 
     if (arguments != null && arguments!.isNotEmpty) {

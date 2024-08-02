@@ -17,11 +17,6 @@ import 'package:zaracast/src/shared/data/params/no_params.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-/// The [ChangeNotifier] allows the [AuthBloc] to be a [Listenable] so it can
-/// notify the [GoRouter] when the authentication status changes so it can
-/// redirect.
-//class AuthBloc extends Bloc<AuthEvent, AuthState> with ChangeNotifier {
-
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(
     SignInAnonymouslyUseCase signInAnonymouslyUseCase,
@@ -37,7 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _verifyEmailOtpUseCase = verifyEmailOtpUseCase,
         _verifyPhoneOtpUseCase = verifyPhoneOtpUseCase,
         super(const AuthInitial()) {
-    // TODO: Add auth stream in S2? Or use supabase client?
+    // TODO(red): Add auth stream in S2? Or use supabase client?
     /*
     _authStatusStream = _authRepo.authStatus.listen(
       (status) => add(AuthStatusChanged(status)),

@@ -9,7 +9,9 @@ import 'package:zaracast/src/features/search/presentation/widgets/podcast_search
 import 'package:zaracast/src/shared/presentation/blocs/snack_bar/snack_bar_bloc.dart';
 
 class PodcastSearchBar extends StatefulWidget {
-  const PodcastSearchBar({super.key});
+  const PodcastSearchBar(this.controller, {super.key});
+
+  final SearchController controller;
 
   @override
   State<PodcastSearchBar> createState() => _PodcastSearchBarState();
@@ -21,7 +23,7 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
 
   @override
   void initState() {
-    _controller = SearchController();
+    _controller = widget.controller;
     _focusNode = FocusNode();
     super.initState();
   }
@@ -128,8 +130,8 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
                     ),
                     Expanded(
                       child: ListView.separated(
-                        // Without this padding, the first list tile does not begin
-                        // immediately beneath the widget above it.
+                        // Without this padding, the first list tile does not 
+                        // begin immediately beneath the widget above it.
                         padding: EdgeInsets.zero,
                         itemCount: searchHistory.length,
                         separatorBuilder: (context, index) => const Divider(
@@ -138,7 +140,7 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
                         ),
                         itemBuilder: (context, index) => PodcastSearchListTile(
                           podcast: searchHistory[index],
-                          onTap: () => print('nav to detail page'),
+                        //  onTap: () => print('nav to detail page'),
                         ),
                       ),
                     ),

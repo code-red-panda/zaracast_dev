@@ -145,7 +145,7 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
             ),
           ),
         ),
-        // const SliverToBoxAdapter(child: Divider(indent: 16, endIndent: 16)),
+
         SliverList.separated(
           itemCount: 10,
           separatorBuilder: (context, index) => const Divider(
@@ -187,14 +187,14 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-               
                     children: [
                       FilledButton.icon(
                         icon: const Icon(Icons.play_arrow),
                         label: const Text('2h 53m'),
                         style: ButtonStyle(
-                          // padding: WidgetStateProperty.all(EdgeInsets.zero),
-                          // fixedSize:
+                          padding: WidgetStateProperty.all(
+                              EdgeInsets.symmetric(horizontal: 8)),
+                          //fixedSize:
                           //     WidgetStateProperty.all(const Size(64, 12)),
                           iconSize: WidgetStateProperty.all(16),
                           textStyle: WidgetStateProperty.all(
@@ -209,7 +209,7 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                         icon: const Icon(Icons.bookmark_add),
                         onPressed: () => print('bookmark'),
                       ),
-                     // const SizedBox(width: 4),
+                      // const SizedBox(width: 4),
                       IconButton(
                         icon: const Icon(Icons.download),
                         onPressed: () => print('download'),
@@ -220,6 +220,21 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
               ],
             );
           },
+        ),
+        const SliverToBoxAdapter(child: Divider(indent: 16, endIndent: 16)),
+        SliverPadding(
+          padding: const EdgeInsets.only(left: 16),
+          sliver: SliverToBoxAdapter(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                iconAlignment: IconAlignment.end,
+                icon: const Icon(Icons.chevron_right),
+                label: const Text('See all unplayed'),
+                onPressed: () => 'go see all unplayed',
+              ),
+            ),
+          ),
         ),
       ],
     );

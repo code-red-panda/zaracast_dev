@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zaracast/src/core/utils/helpers/format_helper.dart';
 import 'package:zaracast/src/features/podcast/domain/entities/podcast_entity.dart';
 import 'package:zaracast/src/features/search/data/dependency_injection/search_singletons.dart';
@@ -117,7 +118,7 @@ class _DiscoverPageChildState extends State<DiscoverPageChild>
                     ),
                   ),
                   onTap: () {
-                   // print('nav to podcast detail page ${podcast.id}');
+                    context.go('/discover/${podcast.id}');
 
                     final params = CreatePodcastSearchParams(podcast);
 

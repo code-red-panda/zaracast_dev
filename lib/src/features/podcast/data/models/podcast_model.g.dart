@@ -34,6 +34,7 @@ PodcastModel _$PodcastModelFromJson(Map<String, dynamic> json) => PodcastModel(
       parseErrors: (json['parseErrors'] as num).toInt(),
       locked: (json['locked'] as num).toInt(),
       imageUrlHash: (json['imageUrlHash'] as num).toInt(),
+      updatedAt: (json['updatedAt'] as num?)?.toInt() ?? 0,
       itunesId: (json['itunesId'] as num?)?.toInt(),
       itunesType: json['itunesType'] as String?,
       generator: json['generator'] as String?,
@@ -81,4 +82,5 @@ Map<String, dynamic> _$PodcastModelToJson(PodcastModel instance) =>
       'value': instance.value,
       'funding': instance.funding,
       'newestItemPubdate': instance.newestItemPubdate,
+      'updatedAt': instance.updatedAt,
     };

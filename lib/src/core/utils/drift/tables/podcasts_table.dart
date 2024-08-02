@@ -37,6 +37,7 @@ class Podcasts extends Table {
   TextColumn get value => text().nullable().map(const JsonConverter())();
   TextColumn get funding => text().nullable().map(const JsonConverter())();
   IntColumn get newestItemPubdate => integer().nullable()();
+  DateTimeColumn get updatedAt => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};

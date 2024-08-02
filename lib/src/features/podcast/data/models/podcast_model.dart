@@ -33,6 +33,7 @@ class PodcastModel extends PodcastEntity {
     required super.parseErrors,
     required super.locked,
     required super.imageUrlHash,
+    required super.updatedAt,
     super.itunesId,
     super.itunesType,
     super.generator,
@@ -83,6 +84,7 @@ class PodcastModel extends PodcastEntity {
       value: entity.value,
       funding: entity.funding,
       newestItemPubdate: entity.newestItemPubdate,
+      updatedAt: entity.updatedAt,
     );
   }
 

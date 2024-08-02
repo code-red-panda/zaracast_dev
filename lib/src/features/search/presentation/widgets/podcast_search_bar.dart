@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zaracast/src/features/podcast/domain/entities/podcast_entity.dart';
 import 'package:zaracast/src/features/search/data/dependency_injection/search_singletons.dart';
 import 'package:zaracast/src/features/search/data/params/search_podcasts_params.dart';
@@ -73,6 +74,7 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
             icon: const Icon(Icons.clear),
             onPressed: () {
               _controller.clear();
+              context.read<SearchBloc>().add(const ClearSearchEvent());
             },
           ),
         ],
@@ -130,7 +132,7 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
                     ),
                     Expanded(
                       child: ListView.separated(
-                        // Without this padding, the first list tile does not 
+                        // Without this padding, the first list tile does not
                         // begin immediately beneath the widget above it.
                         padding: EdgeInsets.zero,
                         itemCount: searchHistory.length,
@@ -140,7 +142,13 @@ class _PodcastSearchBarState extends State<PodcastSearchBar> {
                         ),
                         itemBuilder: (context, index) => PodcastSearchListTile(
                           podcast: searchHistory[index],
-                        //  onTap: () => print('nav to detail page'),
+                          onTap: () {
+                            if (_controller.isAttached) {
+                              _controller.closeView(null);
+                            }
+                            
+                            context.go('/discover/${searchHistory[index].id}');
+                          },
                         ),
                       ),
                     ),

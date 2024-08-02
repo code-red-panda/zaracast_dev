@@ -38,6 +38,7 @@ class PodcastEntity {
     this.value,
     this.funding,
     this.newestItemPubdate,
+    this.updatedAt = 0,
   });
 
   const PodcastEntity.empty({
@@ -68,6 +69,7 @@ class PodcastEntity {
     this.parseErrors = 0,
     this.locked = 0,
     this.imageUrlHash = 0,
+    this.updatedAt = 0,
     this.itunesId,
     this.itunesType,
     this.generator,
@@ -113,7 +115,7 @@ class PodcastEntity {
   final Map<String, dynamic>? value; // GET /podcasts/byfeedid
   final Map<String, dynamic>? funding; // GET /podcasts/byfeedid
   final int? newestItemPubdate; // GET /search/byterm
-
+  final int updatedAt;
 
   String get imageName => '$id.jpg';
 }

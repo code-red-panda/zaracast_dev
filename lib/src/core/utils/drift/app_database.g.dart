@@ -215,6 +215,12 @@ class $PodcastsTable extends Podcasts with TableInfo<$PodcastsTable, Podcast> {
   late final GeneratedColumn<int> newestItemPubdate = GeneratedColumn<int>(
       'newest_item_pubdate', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -251,7 +257,8 @@ class $PodcastsTable extends Podcasts with TableInfo<$PodcastsTable, Podcast> {
         imageUrlHash,
         value,
         funding,
-        newestItemPubdate
+        newestItemPubdate,
+        updatedAt
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -476,6 +483,10 @@ class $PodcastsTable extends Podcasts with TableInfo<$PodcastsTable, Podcast> {
           newestItemPubdate.isAcceptableOrUnknown(
               data['newest_item_pubdate']!, _newestItemPubdateMeta));
     }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
     return context;
   }
 
@@ -559,6 +570,8 @@ class $PodcastsTable extends Podcasts with TableInfo<$PodcastsTable, Podcast> {
           .read(DriftSqlType.string, data['${effectivePrefix}funding'])),
       newestItemPubdate: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}newest_item_pubdate']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
     );
   }
 
@@ -617,6 +630,7 @@ class Podcast extends DataClass implements Insertable<Podcast> {
   final Map<String, dynamic>? value;
   final Map<String, dynamic>? funding;
   final int? newestItemPubdate;
+  final DateTime? updatedAt;
   const Podcast(
       {required this.id,
       required this.podcastGuid,
@@ -652,7 +666,8 @@ class Podcast extends DataClass implements Insertable<Podcast> {
       required this.imageUrlHash,
       this.value,
       this.funding,
-      this.newestItemPubdate});
+      this.newestItemPubdate,
+      this.updatedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -710,6 +725,9 @@ class Podcast extends DataClass implements Insertable<Podcast> {
     if (!nullToAbsent || newestItemPubdate != null) {
       map['newest_item_pubdate'] = Variable<int>(newestItemPubdate);
     }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
     return map;
   }
 
@@ -764,6 +782,9 @@ class Podcast extends DataClass implements Insertable<Podcast> {
       newestItemPubdate: newestItemPubdate == null && nullToAbsent
           ? const Value.absent()
           : Value(newestItemPubdate),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
     );
   }
 
@@ -808,6 +829,7 @@ class Podcast extends DataClass implements Insertable<Podcast> {
       value: serializer.fromJson<Map<String, dynamic>?>(json['value']),
       funding: serializer.fromJson<Map<String, dynamic>?>(json['funding']),
       newestItemPubdate: serializer.fromJson<int?>(json['newestItemPubdate']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
     );
   }
   @override
@@ -849,6 +871,7 @@ class Podcast extends DataClass implements Insertable<Podcast> {
       'value': serializer.toJson<Map<String, dynamic>?>(value),
       'funding': serializer.toJson<Map<String, dynamic>?>(funding),
       'newestItemPubdate': serializer.toJson<int?>(newestItemPubdate),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
     };
   }
 
@@ -887,7 +910,8 @@ class Podcast extends DataClass implements Insertable<Podcast> {
           int? imageUrlHash,
           Value<Map<String, dynamic>?> value = const Value.absent(),
           Value<Map<String, dynamic>?> funding = const Value.absent(),
-          Value<int?> newestItemPubdate = const Value.absent()}) =>
+          Value<int?> newestItemPubdate = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent()}) =>
       Podcast(
         id: id ?? this.id,
         podcastGuid: podcastGuid ?? this.podcastGuid,
@@ -927,6 +951,7 @@ class Podcast extends DataClass implements Insertable<Podcast> {
         newestItemPubdate: newestItemPubdate.present
             ? newestItemPubdate.value
             : this.newestItemPubdate,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
       );
   Podcast copyWithCompanion(PodcastsCompanion data) {
     return Podcast(
@@ -989,6 +1014,7 @@ class Podcast extends DataClass implements Insertable<Podcast> {
       newestItemPubdate: data.newestItemPubdate.present
           ? data.newestItemPubdate.value
           : this.newestItemPubdate,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
 
@@ -1029,7 +1055,8 @@ class Podcast extends DataClass implements Insertable<Podcast> {
           ..write('imageUrlHash: $imageUrlHash, ')
           ..write('value: $value, ')
           ..write('funding: $funding, ')
-          ..write('newestItemPubdate: $newestItemPubdate')
+          ..write('newestItemPubdate: $newestItemPubdate, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
@@ -1070,7 +1097,8 @@ class Podcast extends DataClass implements Insertable<Podcast> {
         imageUrlHash,
         value,
         funding,
-        newestItemPubdate
+        newestItemPubdate,
+        updatedAt
       ]);
   @override
   bool operator ==(Object other) =>
@@ -1110,7 +1138,8 @@ class Podcast extends DataClass implements Insertable<Podcast> {
           other.imageUrlHash == this.imageUrlHash &&
           other.value == this.value &&
           other.funding == this.funding &&
-          other.newestItemPubdate == this.newestItemPubdate);
+          other.newestItemPubdate == this.newestItemPubdate &&
+          other.updatedAt == this.updatedAt);
 }
 
 class PodcastsCompanion extends UpdateCompanion<Podcast> {
@@ -1149,6 +1178,7 @@ class PodcastsCompanion extends UpdateCompanion<Podcast> {
   final Value<Map<String, dynamic>?> value;
   final Value<Map<String, dynamic>?> funding;
   final Value<int?> newestItemPubdate;
+  final Value<DateTime?> updatedAt;
   const PodcastsCompanion({
     this.id = const Value.absent(),
     this.podcastGuid = const Value.absent(),
@@ -1185,6 +1215,7 @@ class PodcastsCompanion extends UpdateCompanion<Podcast> {
     this.value = const Value.absent(),
     this.funding = const Value.absent(),
     this.newestItemPubdate = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   PodcastsCompanion.insert({
     this.id = const Value.absent(),
@@ -1222,6 +1253,7 @@ class PodcastsCompanion extends UpdateCompanion<Podcast> {
     this.value = const Value.absent(),
     this.funding = const Value.absent(),
     this.newestItemPubdate = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   })  : podcastGuid = Value(podcastGuid),
         title = Value(title),
         url = Value(url),
@@ -1284,6 +1316,7 @@ class PodcastsCompanion extends UpdateCompanion<Podcast> {
     Expression<String>? value,
     Expression<String>? funding,
     Expression<int>? newestItemPubdate,
+    Expression<DateTime>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1322,6 +1355,7 @@ class PodcastsCompanion extends UpdateCompanion<Podcast> {
       if (value != null) 'value': value,
       if (funding != null) 'funding': funding,
       if (newestItemPubdate != null) 'newest_item_pubdate': newestItemPubdate,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
@@ -1360,7 +1394,8 @@ class PodcastsCompanion extends UpdateCompanion<Podcast> {
       Value<int>? imageUrlHash,
       Value<Map<String, dynamic>?>? value,
       Value<Map<String, dynamic>?>? funding,
-      Value<int?>? newestItemPubdate}) {
+      Value<int?>? newestItemPubdate,
+      Value<DateTime?>? updatedAt}) {
     return PodcastsCompanion(
       id: id ?? this.id,
       podcastGuid: podcastGuid ?? this.podcastGuid,
@@ -1398,6 +1433,7 @@ class PodcastsCompanion extends UpdateCompanion<Podcast> {
       value: value ?? this.value,
       funding: funding ?? this.funding,
       newestItemPubdate: newestItemPubdate ?? this.newestItemPubdate,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -1513,6 +1549,9 @@ class PodcastsCompanion extends UpdateCompanion<Podcast> {
     if (newestItemPubdate.present) {
       map['newest_item_pubdate'] = Variable<int>(newestItemPubdate.value);
     }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
     return map;
   }
 
@@ -1553,7 +1592,8 @@ class PodcastsCompanion extends UpdateCompanion<Podcast> {
           ..write('imageUrlHash: $imageUrlHash, ')
           ..write('value: $value, ')
           ..write('funding: $funding, ')
-          ..write('newestItemPubdate: $newestItemPubdate')
+          ..write('newestItemPubdate: $newestItemPubdate, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
@@ -2028,6 +2068,7 @@ typedef $$PodcastsTableCreateCompanionBuilder = PodcastsCompanion Function({
   Value<Map<String, dynamic>?> value,
   Value<Map<String, dynamic>?> funding,
   Value<int?> newestItemPubdate,
+  Value<DateTime?> updatedAt,
 });
 typedef $$PodcastsTableUpdateCompanionBuilder = PodcastsCompanion Function({
   Value<int> id,
@@ -2065,6 +2106,7 @@ typedef $$PodcastsTableUpdateCompanionBuilder = PodcastsCompanion Function({
   Value<Map<String, dynamic>?> value,
   Value<Map<String, dynamic>?> funding,
   Value<int?> newestItemPubdate,
+  Value<DateTime?> updatedAt,
 });
 
 class $$PodcastsTableTableManager extends RootTableManager<
@@ -2119,6 +2161,7 @@ class $$PodcastsTableTableManager extends RootTableManager<
             Value<Map<String, dynamic>?> value = const Value.absent(),
             Value<Map<String, dynamic>?> funding = const Value.absent(),
             Value<int?> newestItemPubdate = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
           }) =>
               PodcastsCompanion(
             id: id,
@@ -2156,6 +2199,7 @@ class $$PodcastsTableTableManager extends RootTableManager<
             value: value,
             funding: funding,
             newestItemPubdate: newestItemPubdate,
+            updatedAt: updatedAt,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -2193,6 +2237,7 @@ class $$PodcastsTableTableManager extends RootTableManager<
             Value<Map<String, dynamic>?> value = const Value.absent(),
             Value<Map<String, dynamic>?> funding = const Value.absent(),
             Value<int?> newestItemPubdate = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
           }) =>
               PodcastsCompanion.insert(
             id: id,
@@ -2230,6 +2275,7 @@ class $$PodcastsTableTableManager extends RootTableManager<
             value: value,
             funding: funding,
             newestItemPubdate: newestItemPubdate,
+            updatedAt: updatedAt,
           ),
         ));
 }
@@ -2418,6 +2464,11 @@ class $$PodcastsTableFilterComposer
 
   ColumnFilters<int> get newestItemPubdate => $state.composableBuilder(
       column: $state.table.newestItemPubdate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get updatedAt => $state.composableBuilder(
+      column: $state.table.updatedAt,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -2615,6 +2666,11 @@ class $$PodcastsTableOrderingComposer
 
   ColumnOrderings<int> get newestItemPubdate => $state.composableBuilder(
       column: $state.table.newestItemPubdate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get updatedAt => $state.composableBuilder(
+      column: $state.table.updatedAt,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }

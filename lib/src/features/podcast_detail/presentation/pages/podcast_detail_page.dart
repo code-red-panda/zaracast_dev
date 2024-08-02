@@ -145,7 +145,7 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
             ),
           ),
         ),
-        const SliverToBoxAdapter(child: Divider(indent: 16, endIndent: 16)),
+        // const SliverToBoxAdapter(child: Divider(indent: 16, endIndent: 16)),
         SliverList.separated(
           itemCount: 10,
           separatorBuilder: (context, index) => const Divider(
@@ -153,27 +153,71 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
             endIndent: 16,
           ),
           itemBuilder: (context, index) {
-            return ListTile(
-              //minTileHeight: 124,
-              leading: SizedBox(
-                height: 64,
-                width: 64,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CachedNetworkImageBuilder(
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    '5 days ago',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+                ListTile(
+                  leading: SizedBox(
+                    height: 64,
+                    width: 64,
+                    child: CachedNetworkImageBuilder(
                       imageUrl:
                           'https://i.pinimg.com/originals/59/de/4f/59de4fb27cd342f038e2d90ea75bcea0.jpg',
                       prefs: prefs,
                     ),
-                  ],
+                  ),
+                  title: const Text('This Is The Episode Title'),
+                  subtitle: const Text(
+                    'This can be the description that may wrap a couple lines and then eventually it will finish but keep going and we will show an...',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: const Icon(Icons.more_vert),
+                  onTap: () => print('episode detail'),
                 ),
-              ),
-              title: const Text('This Is The Episode Title'),
-              subtitle: const Text('Episode Description'),
-              isThreeLine: true,
-              trailing: const Text('1:23:45'),
-              onTap: () => print('play'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+               
+                    children: [
+                      FilledButton.icon(
+                        icon: const Icon(Icons.play_arrow),
+                        label: const Text('2h 53m'),
+                        style: ButtonStyle(
+                          // padding: WidgetStateProperty.all(EdgeInsets.zero),
+                          // fixedSize:
+                          //     WidgetStateProperty.all(const Size(64, 12)),
+                          iconSize: WidgetStateProperty.all(16),
+                          textStyle: WidgetStateProperty.all(
+                            Theme.of(context).textTheme.bodySmall,
+                          ),
+                          visualDensity: VisualDensity.compact,
+                        ),
+                        onPressed: () => print('play'),
+                      ),
+                      //const SizedBox(width: 4),
+                      IconButton(
+                        icon: const Icon(Icons.bookmark_add),
+                        onPressed: () => print('bookmark'),
+                      ),
+                     // const SizedBox(width: 4),
+                      IconButton(
+                        icon: const Icon(Icons.download),
+                        onPressed: () => print('download'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             );
           },
         ),

@@ -20,7 +20,7 @@ Future<void> registerSingletons() async {
   getIt
     ..registerLazySingleton(AppDatabase.new)
     ..registerLazySingleton(
-      () => DioNetwork(baseUrl: 'https://api.podcastindex.org/api/1.0/'),
+      () => DioNetwork(baseUrl: podcastIndexBaseUrl),
     )
     ..registerLazySingleton(() => NetworkInfoImpl(InternetConnection()))
     ..registerLazySingleton(

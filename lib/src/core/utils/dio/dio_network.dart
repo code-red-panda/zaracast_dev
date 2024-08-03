@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:zaracast/src/core/errors/exceptions.dart';
-import 'package:zaracast/src/core/utils/dio/dio_exceptions.dart';
+import 'package:zaracast/src/core/utils/dio/dio_error_handler.dart';
 
 // TODO(red): Add a retry mechanism
 class DioNetwork {

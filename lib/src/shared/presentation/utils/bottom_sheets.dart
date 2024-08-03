@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// TODO(red): Update this to accept a list tile so that we can use switches to be like a settings page
 Future<T?> zShowModalBottomSheet<T>(
   BuildContext context,
-  String title,
+  Widget header,
   List<BottomSheetListItem<T>> items,
 ) async {
   return showModalBottomSheet<T?>(
@@ -27,12 +28,7 @@ Future<T?> zShowModalBottomSheet<T>(
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+              child: header,
             ),
             const Divider(indent: 16, endIndent: 16),
             ...children

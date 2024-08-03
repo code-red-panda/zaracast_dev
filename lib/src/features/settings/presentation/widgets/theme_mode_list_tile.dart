@@ -39,7 +39,12 @@ class ThemeModeListTile extends StatelessWidget {
             onTap: () async {
               final themeMode = await zShowModalBottomSheet<ThemeMode>(
                 context,
-                'Theme Mode',
+                Text(
+                'Theme mode',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
                 [
                   BottomSheetListItem(
                     icon: Icons.light_mode_outlined,

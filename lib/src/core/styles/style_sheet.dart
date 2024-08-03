@@ -1,6 +1,6 @@
 class AppStyleSheet {
-// Rounded corners follow the M3 specs:
-// https://m3.material.io/styles/shape/shape-scale-tokens
+  /// Rounded corners follow the M3 specs:
+  /// https://m3.material.io/styles/shape/shape-scale-tokens
 
   /// Menus, snackbars, text fields
   static const rExtraSmall = 4.0;

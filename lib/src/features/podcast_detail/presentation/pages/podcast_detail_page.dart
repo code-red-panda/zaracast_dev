@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zaracast/src/core/dependency_injection/singletons.dart';
 import 'package:zaracast/src/core/styles/style_sheet.dart';
-import 'package:zaracast/src/core/themes/material_theme_builder.dart';
 import 'package:zaracast/src/shared/presentation/utils/bottom_sheets.dart';
 import 'package:zaracast/src/shared/presentation/widgets/cached_network_image_builder.dart';
 import 'package:zaracast/src/shared/presentation/widgets/sliver_app_bar_builder.dart';
@@ -50,6 +49,7 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      controller: _scrollController,
       slivers: [
         SliverAppBarBuilder(
           title: widget.title ?? 'My Placeholder Title Displayed Here',
@@ -61,14 +61,59 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
             ),
             IconButton(
               icon: const Icon(Icons.more_vert),
-              onPressed: () {
-                print('more');
+              onPressed: () async {
+                final filter = await zShowModalBottomSheet<String>(
+                  context,
+                  ListTile(
+                    leading: SizedBox(
+                      height: 64,
+                      width: 64,
+                      child: CachedNetworkImageBuilder(
+                        imageUrl:
+                            'https://i.pinimg.com/originals/59/de/4f/59de4fb27cd342f038e2d90ea75bcea0.jpg',
+                        prefs: prefs,
+                      ),
+                    ),
+                    title: Text(
+                      widget.title ?? 'Place holder',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  [
+                    const BottomSheetListItem(
+                      icon: Icons.library_add_check,
+                      name: 'Subscribe',
+                      value: 'Subscribe',
+                      selected: false,
+                    ),
+                    const BottomSheetListItem(
+                      icon: Icons.playlist_add_check,
+                      name: 'Mark all as played',
+                      value: 'Mark all as played',
+                      selected: false,
+                    ),
+                  ],
+                );
+
+                if (filter != null) {
+                  //  final params = UpdateThemeParams(
+                  //    userId: placeHolderUserId,
+                  //    theme: theme,
+                  //  );
+
+                  if (!context.mounted) return;
+                  //   context
+                  //       .read<SettingsBloc>()
+                  //       .add(UpdateThemeEvent(params));
+                }
               },
             ),
           ],
         ),
         // TODO(red): transform to loading indicator
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 64),
@@ -95,7 +140,12 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                   onPressed: () async {
                     final filter = await zShowModalBottomSheet<EpisodeFilter>(
                       context,
-                      'Filter by',
+                      Text(
+                        'Filter by',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                       [
                         const BottomSheetListItem(
                           icon: Icons.notes,
@@ -138,7 +188,9 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                   },
                 ),
                 TextButton.icon(
-                  label: const Text('Sort by: oldest'),
+                  iconAlignment: IconAlignment.end,
+                  icon: const Icon(Icons.sort),
+                  label: const Text('Oldest'),
                   onPressed: () => print('sort'),
                 ),
               ],
@@ -160,7 +212,7 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(
-                    '5 days ago',
+                    '454 • 5 days ago',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
@@ -180,22 +232,68 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: const Icon(Icons.more_vert),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.more_vert),
+                    onPressed: () async {
+                      final filter = await zShowModalBottomSheet<String>(
+                        context,
+                        ListTile(
+                          leading: SizedBox(
+                            height: 64,
+                            width: 64,
+                            child: CachedNetworkImageBuilder(
+                              imageUrl:
+                                  'https://i.pinimg.com/originals/59/de/4f/59de4fb27cd342f038e2d90ea75bcea0.jpg',
+                              prefs: prefs,
+                            ),
+                          ),
+                          title: const Text('This Is The Episode Title'),
+                          subtitle: const Text(
+                            '454 • 5 days ago',
+                          ),
+                        ),
+                        [
+                          const BottomSheetListItem(
+                            icon: Icons.play_arrow,
+                            name: 'Play next',
+                            value: 'Play next',
+                            selected: false,
+                          ),
+                          const BottomSheetListItem(
+                            icon: Icons.playlist_add,
+                            name: 'Add to queue',
+                            value: 'Add to queue',
+                            selected: false,
+                          ),
+                        ],
+                      );
+
+                      if (filter != null) {
+                        //  final params = UpdateThemeParams(
+                        //    userId: placeHolderUserId,
+                        //    theme: theme,
+                        //  );
+
+                        if (!context.mounted) return;
+                        //   context
+                        //       .read<SettingsBloc>()
+                        //       .add(UpdateThemeEvent(params));
+                      }
+                    },
+                  ),
                   onTap: () => print('episode detail'),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       FilledButton.icon(
                         icon: const Icon(Icons.play_arrow),
                         label: const Text('2h 53m'),
                         style: ButtonStyle(
                           padding: WidgetStateProperty.all(
-                              EdgeInsets.symmetric(horizontal: 8)),
-                          //fixedSize:
-                          //     WidgetStateProperty.all(const Size(64, 12)),
+                            const EdgeInsets.symmetric(horizontal: 8),
+                          ),
                           iconSize: WidgetStateProperty.all(16),
                           textStyle: WidgetStateProperty.all(
                             Theme.of(context).textTheme.bodySmall,
@@ -204,15 +302,17 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                         ),
                         onPressed: () => print('play'),
                       ),
-                      //const SizedBox(width: 4),
                       IconButton(
                         icon: const Icon(Icons.bookmark_add),
                         onPressed: () => print('bookmark'),
                       ),
-                      // const SizedBox(width: 4),
                       IconButton(
                         icon: const Icon(Icons.download),
                         onPressed: () => print('download'),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.playlist_add_check),
+                        onPressed: () => print('mark as played'),
                       ),
                     ],
                   ),

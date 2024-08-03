@@ -209,13 +209,6 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    '454 • 5 days ago',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ),
                 ListTile(
                   leading: SizedBox(
                     height: 64,
@@ -227,11 +220,7 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                     ),
                   ),
                   title: const Text('This Is The Episode Title'),
-                  subtitle: const Text(
-                    'This can be the description that may wrap a couple lines and then eventually it will finish but keep going and we will show an...',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  subtitle: const Text('454 • 5 days ago'),
                   trailing: IconButton(
                     icon: const Icon(Icons.more_vert),
                     onPressed: () async {
@@ -248,9 +237,7 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                             ),
                           ),
                           title: const Text('This Is The Episode Title'),
-                          subtitle: const Text(
-                            '454 • 5 days ago',
-                          ),
+                          subtitle: const Text('454 • 5 days ago'),
                         ),
                         [
                           const BottomSheetListItem(
@@ -304,14 +291,17 @@ class _PodcastDetailPageChildState extends State<PodcastDetailPageChild> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.bookmark_add),
+                        visualDensity: VisualDensity.compact,
                         onPressed: () => print('bookmark'),
                       ),
                       IconButton(
                         icon: const Icon(Icons.download),
+                        visualDensity: VisualDensity.compact,
                         onPressed: () => print('download'),
                       ),
                       IconButton(
                         icon: const Icon(Icons.playlist_add_check),
+                        visualDensity: VisualDensity.compact,
                         onPressed: () => print('mark as played'),
                       ),
                     ],

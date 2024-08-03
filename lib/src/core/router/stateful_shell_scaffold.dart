@@ -24,13 +24,28 @@ class StatefulShellScaffold extends StatelessWidget {
   }
 }
 
-class StatefulShellScaffoldChild extends StatelessWidget {
+class StatefulShellScaffoldChild extends StatefulWidget {
   const StatefulShellScaffoldChild(this.child, {super.key});
 
   final StatefulNavigationShell child;
 
-  void _onTap(int index) =>
-      child.goBranch(index, initialLocation: index == child.currentIndex);
+  @override
+  State<StatefulShellScaffoldChild> createState() =>
+      _StatefulShellScaffoldChildState();
+}
+
+class _StatefulShellScaffoldChildState
+    extends State<StatefulShellScaffoldChild> {
+  late bool _showBottomSheet;
+
+  @override
+  void initState() {
+    super.initState();
+    _showBottomSheet = false;
+  }
+
+  void _onTap(int index) => widget.child
+      .goBranch(index, initialLocation: index == widget.child.currentIndex);
 
   @override
   Widget build(BuildContext context) {
@@ -52,77 +67,42 @@ class StatefulShellScaffoldChild extends StatelessWidget {
             context.read<SnackBarBloc>().add(const ClearSnackBarEvent());
           }
         },
-        child: child,
+        child: widget.child,
       ),
-      bottomSheet: ListTile(
-        leading: SizedBox(
-          height: 64,
-          width: 64,
-          child: CachedNetworkImageBuilder(
-            imageUrl:
-                'https://i.pinimg.com/originals/59/de/4f/59de4fb27cd342f038e2d90ea75bcea0.jpg',
-            prefs: prefs,
+      persistentFooterAlignment: AlignmentDirectional.center,
+      persistentFooterButtons: [
+        InkWell(
+          onTap: () => setState(() => _showBottomSheet = !_showBottomSheet),
+          child: const AudioPlayer(),
+        ),
+      ],
+      /*
+      bottomSheet: Visibility(
+        visible: _showBottomSheet,
+        replacement: GestureDetector(
+          onVerticalDragStart: (d) =>
+              setState(() => _showBottomSheet = !_showBottomSheet),
+          child: const ListTile(
+            minTileHeight: 20,
+            contentPadding: EdgeInsets.zero,
+            minVerticalPadding: 0,
+            subtitle: Icon(Icons.horizontal_rule_rounded, size: 48),
+            titleAlignment: ListTileTitleAlignment.center,
           ),
         ),
-        title: const Text('This Is The Episode Tile'),
-        subtitle: const LinearProgressIndicator(value: .3, minHeight: 1),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.fast_rewind),
-              iconSize: 16,
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.play_arrow),
-              iconSize: 16,
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.fast_forward),
-              iconSize: 16,
-              onPressed: () {},
-            ),
-          ],
+        child: BottomSheet(
+          showDragHandle: true,
+          onClosing: () {},
+          builder: (context) {
+            return const ListTile(
+              title: Text('Manage the queue'),
+            );
+          },
         ),
-        onTap: () async {
-          final filter = await zShowModalBottomSheet<String>(
-            context,
-            ListTile(
-              title: const Text('Manage play next from show or queue'),
-            ),
-            [
-              const BottomSheetListItem(
-                icon: Icons.play_arrow,
-                name: 'Play next',
-                value: 'Play next',
-                selected: false,
-              ),
-              const BottomSheetListItem(
-                icon: Icons.playlist_add,
-                name: 'Add to queue',
-                value: 'Add to queue',
-                selected: false,
-              ),
-            ],
-          );
-
-          if (filter != null) {
-            //  final params = UpdateThemeParams(
-            //    userId: placeHolderUserId,
-            //    theme: theme,
-            //  );
-
-            if (!context.mounted) return;
-            //   context
-            //       .read<SettingsBloc>()
-            //       .add(UpdateThemeEvent(params));
-          }
-        },
       ),
+*/
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: child.currentIndex,
+        currentIndex: widget.child.currentIndex,
         items: bottomNavItems
             .map(
               (item) => BottomNavigationBarItem(
@@ -132,6 +112,49 @@ class StatefulShellScaffoldChild extends StatelessWidget {
             )
             .toList(),
         onTap: _onTap,
+      ),
+    );
+  }
+}
+
+class AudioPlayer extends StatelessWidget {
+  const AudioPlayer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: SizedBox(
+        height: 64,
+        width: 64,
+        child: CachedNetworkImageBuilder(
+          imageUrl:
+              'https://i.pinimg.com/originals/59/de/4f/59de4fb27cd342f038e2d90ea75bcea0.jpg',
+          prefs: prefs,
+        ),
+      ),
+      title: const Text('This Is The Episode Tile'),
+      subtitle: const LinearProgressIndicator(value: .3, minHeight: 1),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.fast_rewind),
+            iconSize: 16,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.play_arrow),
+            iconSize: 16,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.fast_forward),
+            iconSize: 16,
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
